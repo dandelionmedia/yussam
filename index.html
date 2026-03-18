@@ -50,6 +50,29 @@ input,textarea,select{font-family:'Noto Sans KR',sans-serif}
 .divider{height:1px;background:#3d342930;margin:16px 0}
 .spinner{width:24px;height:24px;border:2px solid #3d3429;border-top-color:#E88FAD;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 .share-canvas{position:absolute;left:-9999px;top:-9999px}
+/* Profile Button */
+.profile-btn{position:relative;background:#252017;border:2px solid #D4756B;border-radius:50%;width:42px;height:42px;cursor:pointer;overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.profile-btn:hover{border-color:#E88FAD;box-shadow:0 0 12px rgba(232,143,173,.3)}
+.profile-fallback{font-size:16px;font-weight:700;color:#E88FAD;z-index:1}
+.profile-btn img+.profile-fallback{z-index:0}
+.profile-label{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#D4756B,#E88FAD);color:#fff;font-size:8px;font-weight:700;padding:1px 6px;border-radius:6px;line-height:1.2;z-index:2}
+/* Responsive Layout */
+.app-shell{min-height:100vh;background:#1a1612;display:flex;justify-content:center}
+.app-main{width:100%;max-width:480px;position:relative}
+.pc-sidebar{display:none}
+@media(min-width:768px){
+  .app-shell{gap:0}
+  .app-main{max-width:480px;border-left:1px solid #3d342920;border-right:1px solid #3d342920}
+  .pc-sidebar{display:flex;flex-direction:column;width:280px;padding:32px 24px;position:sticky;top:0;height:100vh;overflow-y:auto}
+  .pc-sidebar-left{border-right:1px solid #3d342920}
+  .pc-sidebar-right{border-left:1px solid #3d342920}
+  .tab-bar{max-width:480px}
+  .modal-sheet{max-width:480px}
+}
+@media(min-width:1100px){
+  .pc-sidebar{width:320px;padding:40px 28px}
+}
+
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -73,15 +96,14 @@ const {useState,useEffect,useRef,useCallback}=React;
  *    - 규칙: allow read, write: if request.auth != null;
  */
 const CONFIG = {
-  GOOGLE_CLIENT_ID: "892450271971-cq5oggb0vgnnkcbtjlm51t6h4qg393c1.apps.googleusercontent.com",
+  GOOGLE_CLIENT_ID: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
   FIREBASE: {
-    apiKey: "AIzaSyArbvaD2OAhKqCclGBcaiyvQT1bIvKx_uY",
-    authDomain: "blog-writing-challenge.firebaseapp.com",
-    projectId: "blog-writing-challenge",
-    storageBucket: "blog-writing-challenge.firebasestorage.app",
-    messagingSenderId: "538960448175",
-    appId: "1:538960448175:web:71bb41ae88a2f836fde25a", //
-    measurementId: "G-3G0JSB6GE1"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "000000000",
+    appId: "YOUR_APP_ID"
   }
 };
 
@@ -381,7 +403,38 @@ function ChallengeApp({user,onLogout}){
   const mn=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
 
   return(
-    <div style={{minHeight:"100vh",background:"#1a1612",color:"#e8dcc8",fontFamily:"'Noto Sans KR',sans-serif",maxWidth:480,margin:"0 auto",position:"relative",overflow:"hidden"}}>
+    <div className="app-shell">
+      {/* PC Left Sidebar */}
+      <div className="pc-sidebar pc-sidebar-left">
+        <div style={{marginBottom:32}}>
+          <div style={{fontSize:40,marginBottom:12}}>✍️</div>
+          <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,color:"#e8dcc8",marginBottom:4}}>매일 글쓰기</h2>
+          <span className="premium-badge">PRO</span>
+        </div>
+        <div style={{background:"#252017",borderRadius:16,padding:16,marginBottom:20,border:"1px solid #3d342920"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
+            <img src={COACH_IMG} alt="" style={{width:36,height:36,borderRadius:"50%",objectFit:"cover"}}/>
+            <div><p style={{fontSize:12,fontWeight:700,color:"#e8dcc8"}}>유쌤클래스</p><p className="text-muted">AI콘텐츠마케팅연구소</p></div>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            <img src={user.picture} alt="" style={{width:28,height:28,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display="none";}}/>
+            <div><p style={{fontSize:12,color:"#e8dcc8"}}>{user.name}</p><p className="text-xs">{user.email}</p></div>
+          </div>
+        </div>
+        <div style={{marginBottom:20}}>
+          <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:32}}>{lv.emoji}</span><div><p style={{fontSize:16,fontWeight:900,color:lv.color}}>{lv.name}</p><p className="text-muted">총 {data.totalDays}일 작성</p></div></div>
+          {nlv&&<div style={{height:5,background:"#252017",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3}}/></div>}
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          <button onClick={()=>generateShareCard(data,user.name)} className="btn-secondary" style={{textAlign:"left",fontSize:12}}>🖼️ SNS 공유카드 다운로드</button>
+          <button onClick={()=>DataService.exportData(data)} className="btn-secondary" style={{textAlign:"left",fontSize:12}}>📥 데이터 백업</button>
+          <button onClick={()=>fileRef.current.click()} className="btn-secondary" style={{textAlign:"left",fontSize:12}}>📤 데이터 복원</button>
+        </div>
+        <div style={{marginTop:"auto",paddingTop:20}}><p className="text-xs" style={{textAlign:"center"}}>Made by AI콘텐츠마케팅연구소<br/>유쌤클래스</p></div>
+      </div>
+
+      {/* Main Content */}
+      <div className="app-main" style={{minHeight:"100vh",background:"#1a1612",color:"#e8dcc8",fontFamily:"'Noto Sans KR',sans-serif",position:"relative",overflow:"hidden"}}>
       <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.08) 0%,transparent 60%)",pointerEvents:"none",zIndex:0}}/>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={handleImport}/>
 
@@ -464,7 +517,7 @@ function ChallengeApp({user,onLogout}){
       {view==="home"&&<div style={{padding:"20px 20px 0"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
           <div style={{display:"flex",alignItems:"center",gap:12}}><img src={COACH_IMG} alt="" style={{width:40,height:40,borderRadius:"50%",border:"2px solid #3d3429",objectFit:"cover"}}/><div><p className="text-muted" style={{letterSpacing:2,marginBottom:1,fontSize:10}}>Blog Writing Challenge PRO</p><h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,fontWeight:700}}>매일 글쓰기</h1></div></div>
-          <button onClick={()=>setShowProf(!showProf)} style={{background:"none",border:"2px solid #3d3429",borderRadius:"50%",width:34,height:34,cursor:"pointer",overflow:"hidden",padding:0}}><img src={user.picture} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} referrerPolicy="no-referrer"/></button>
+          <button onClick={()=>setShowProf(!showProf)} className="profile-btn"><img src={user.picture} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display="none";}}/><span className="profile-fallback">{(user.name||"U")[0]}</span><span className="profile-label">MY</span></button>
         </div>
         <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:14,padding:"10px 14px",marginBottom:16,display:"flex",alignItems:"center",gap:10,border:"1px solid #3d342930"}}>
           <div style={{width:5,height:28,borderRadius:3,background:"linear-gradient(to bottom,#D4756B,#E88FAD)",flexShrink:0}}/>
@@ -621,6 +674,34 @@ function ChallengeApp({user,onLogout}){
           </button>)}
         </div>
         <p style={{textAlign:"center",fontSize:8,color:"#3d3429",marginTop:4}}>Made by AI콘텐츠마케팅연구소 유쌤클래스</p>
+      </div>
+      </div>
+
+      {/* PC Right Sidebar */}
+      <div className="pc-sidebar pc-sidebar-right">
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"#e8dcc8",marginBottom:16}}>🔥 오늘의 현황</h3>
+        <div style={{background:"#252017",borderRadius:14,padding:16,marginBottom:16,border:"1px solid #3d342920"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+            <span style={{fontSize:13,color:"#8b7e6a"}}>오늘 체크</span>
+            <span style={{fontSize:14,fontWeight:700,color:done?"#6B8E4E":"#D4756B"}}>{done?"완료 ✅":"미완료"}</span>
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+            <span style={{fontSize:13,color:"#8b7e6a"}}>연속 작성</span>
+            <span style={{fontSize:14,fontWeight:700}}>🔥 {data.currentStreak}일</span>
+          </div>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+            <span style={{fontSize:13,color:"#8b7e6a"}}>최고 기록</span>
+            <span style={{fontSize:14,fontWeight:700}}>⚡ {data.maxStreak}일</span>
+          </div>
+        </div>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"#e8dcc8",marginBottom:12}}>🏅 뱃지 현황</h3>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:20}}>
+          {BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:10,background:e?"#252017":"#1e1a14",borderRadius:10,opacity:e?1:.35,border:"1px solid "+(e?"#3d3429":"transparent")}}><div style={{fontSize:22,marginBottom:2,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:9,color:e?"#e8dcc8":"#5a4f3f"}}>{b.name}</p></div>;})}
+        </div>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"#e8dcc8",marginBottom:12}}>💡 추천 주제</h3>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {TREND_KEYWORDS.slice(0,5).map((kw,i)=><button key={i} onClick={()=>{setView("topics");getAi(kw);}} style={{padding:"8px 12px",background:"#252017",border:"1px solid #3d342920",borderRadius:10,color:"#d4c8b0",fontSize:12,cursor:"pointer",textAlign:"left"}}>#{kw}</button>)}
+        </div>
       </div>
     </div>
   );
