@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
 <meta charset="UTF-8">
+<script>try{const t=localStorage.getItem("bc-theme");if(t)document.documentElement.setAttribute("data-theme",t);}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>매일 글쓰기 챌린지 PRO - AI콘텐츠마케팅연구소 유쌤클래스</title>
 <meta name="description" content="친절한유성쌤과 함께하는 블로그 글쓰기 챌린지 앱">
@@ -13,66 +14,96 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body,#root{min-height:100vh;min-height:100dvh;background:#1a1612}
-body{font-family:'Noto Sans KR',sans-serif;overflow-x:hidden}
+:root,html[data-theme="light"]{
+  --bg1:#FAF8F5;--bg2:#F5F3EE;--bg3:#EDEAE4;--bg-input:#F5F3EE;
+  --tx1:#2C2A25;--tx2:#7A7568;--tx3:#A09B8E;
+  --bd1:#DDD9D0;--bd2:#C8C3B8;
+  --card:#FFFFFF;--card-border:rgba(0,0,0,.08);
+  --overlay:rgba(0,0,0,.45);--modal:#FFFFFF;
+  --tab-bg:linear-gradient(to top,#FAF8F5 80%,transparent);
+  --tab-active:#EDEAE4;--tab-label:#A09B8E;--tab-label-active:#2C2A25;
+  --glow1:rgba(212,117,107,.2);--glow2:rgba(212,117,107,.4);
+  --sidebar-bd:rgba(0,0,0,.06);--scroll-thumb:#D0CBC0;
+  --done-bg:linear-gradient(135deg,#E8F5E0,#D4EDCF);--done-tx:#4A8C3F;
+  --empty-bg:#F5F3EE;--earned-bg:#FFFFFF;--earned-bd:#DDD9D0;
+  --lv-bg:linear-gradient(145deg,#FFFFFF,#FAF8F5);
+  --brand-bg:linear-gradient(135deg,#F5F3EE,#EDEAE4);--brand-bd:rgba(0,0,0,.06);
+  --cal-today:#EDEAE4;--cal-tx:#7A7568;--cal-active-tx:#2C2A25;
+  --ai-text:#4A4640;
+}
+html[data-theme="dark"]{
+  --bg1:#1a1612;--bg2:#252017;--bg3:#1e1a14;--bg-input:#1a1612;
+  --tx1:#e8dcc8;--tx2:#8b7e6a;--tx3:#5a4f3f;
+  --bd1:#3d3429;--bd2:#4d4439;
+  --card:#252017;--card-border:rgba(61,52,41,.13);
+  --overlay:rgba(0,0,0,.8);--modal:#252017;
+  --tab-bg:linear-gradient(to top,#1a1612 80%,transparent);
+  --tab-active:#3d3429;--tab-label:#5a4f3f;--tab-label-active:#e8dcc8;
+  --glow1:rgba(232,143,173,.3);--glow2:rgba(232,143,173,.6);
+  --sidebar-bd:rgba(61,52,41,.13);--scroll-thumb:#3d3429;
+  --done-bg:linear-gradient(135deg,#2d3b2a,#2a3328);--done-tx:#6B8E4E;
+  --empty-bg:#1e1a14;--earned-bg:#252017;--earned-bd:#3d3429;
+  --lv-bg:linear-gradient(145deg,#252017,#2a2318);
+  --brand-bg:linear-gradient(135deg,#252017,#2a2318);--brand-bd:rgba(61,52,41,.19);
+  --cal-today:#3d3429;--cal-tx:#6b5f4f;--cal-active-tx:#e8dcc8;
+  --ai-text:#d4c8b0;
+}
+html,body,#root{min-height:100vh;min-height:100dvh;background:var(--bg1);transition:background .3s}
+body{font-family:'Noto Sans KR',sans-serif;overflow-x:hidden;color:var(--tx1)}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(232,143,173,.3)}50%{box-shadow:0 0 40px rgba(232,143,173,.6)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px var(--glow1)}50%{box-shadow:0 0 40px var(--glow2)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes confettiDrop{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#3d3429;border-radius:4px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:4px}
 input,textarea,select{font-family:'Noto Sans KR',sans-serif}
-.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:linear-gradient(to top,#1a1612 80%,transparent);padding:12px 0 8px;z-index:100}
+.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--tab-bg);padding:12px 0 8px;z-index:100}
 .tab-bar-inner{display:flex;justify-content:space-around;align-items:center;padding:0 12px}
 .tab-btn{background:none;border:none;border-radius:14px;padding:8px 16px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .2s;position:relative}
-.tab-btn.active{background:#3d3429}
+.tab-btn.active{background:var(--tab-active)}
 .tab-btn span.icon{font-size:20px}
-.tab-btn span.label{font-size:9px;color:#5a4f3f;font-weight:400}
-.tab-btn.active span.label{color:#e8dcc8;font-weight:700}
-.badge-dot{position:absolute;top:4px;right:12px;width:7px;height:7px;background:#E88FAD;border-radius:50%}
-.card{background:#252017;border-radius:20px;padding:20px;border:1px solid #3d342920;margin-bottom:16px}
-.card-sm{background:#252017;border-radius:16px;padding:16px;border:1px solid #3d342920}
+.tab-btn span.label{font-size:9px;color:var(--tab-label);font-weight:400}
+.tab-btn.active span.label{color:var(--tab-label-active);font-weight:700}
+.card{background:var(--card);border-radius:20px;padding:20px;border:1px solid var(--card-border);margin-bottom:16px;transition:all .3s}
+.card-sm{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--card-border);transition:all .3s}
 .btn-primary{width:100%;padding:16px;background:linear-gradient(135deg,#D4756B,#E88FAD);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s}
-.btn-secondary{padding:10px 20px;background:#3d3429;border:none;border-radius:12px;color:#e8dcc8;font-size:13px;cursor:pointer;transition:all .2s}
-.btn-secondary:hover{background:#4d4439}
+.btn-secondary{padding:10px 20px;background:var(--bg3);border:1px solid var(--card-border);border-radius:12px;color:var(--tx1);font-size:13px;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{background:var(--bd1)}
 .premium-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#F0997B,#ED93B1);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:900;padding:20px;animation:fadeIn .2s}
-.modal-bottom{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;align-items:flex-end;justify-content:center;z-index:900}
-.modal-content{background:#252017;border-radius:20px;padding:24px;max-width:420px;width:100%;max-height:80vh;overflow-y:auto;animation:slideUp .3s}
-.modal-sheet{background:#252017;width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:32px 24px;animation:slideUp .3s}
-.input-field{width:100%;padding:12px 16px;background:#1a1612;border:1px solid #3d3429;border-radius:12px;color:#e8dcc8;font-size:14px;outline:none}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--overlay);display:flex;align-items:center;justify-content:center;z-index:900;padding:20px;animation:fadeIn .2s}
+.modal-bottom{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--overlay);display:flex;align-items:flex-end;justify-content:center;z-index:900}
+.modal-content{background:var(--modal);border-radius:20px;padding:24px;max-width:420px;width:100%;max-height:80vh;overflow-y:auto;animation:slideUp .3s;color:var(--tx1)}
+.modal-sheet{background:var(--modal);width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:32px 24px;animation:slideUp .3s;color:var(--tx1)}
+.input-field{width:100%;padding:12px 16px;background:var(--bg-input);border:1px solid var(--bd1);border-radius:12px;color:var(--tx1);font-size:14px;outline:none;transition:all .3s}
 .input-field:focus{border-color:#D4756B}
-.section-title{font-family:'Noto Serif KR',serif;font-size:16px;margin-bottom:14px}
-.text-muted{font-size:11px;color:#8b7e6a}
-.text-xs{font-size:10px;color:#5a4f3f}
-.divider{height:1px;background:#3d342930;margin:16px 0}
-.spinner{width:24px;height:24px;border:2px solid #3d3429;border-top-color:#E88FAD;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+.section-title{font-family:'Noto Serif KR',serif;font-size:16px;margin-bottom:14px;color:var(--tx1)}
+.text-muted{font-size:11px;color:var(--tx2)}
+.text-xs{font-size:10px;color:var(--tx3)}
+.divider{height:1px;background:var(--bd1);margin:16px 0;opacity:.4}
+.spinner{width:24px;height:24px;border:2px solid var(--bd1);border-top-color:#E88FAD;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
 .share-canvas{position:absolute;left:-9999px;top:-9999px}
-/* Profile Button */
-.profile-btn{position:relative;background:#252017;border:2px solid #D4756B;border-radius:50%;width:42px;height:42px;cursor:pointer;overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.profile-btn{position:relative;background:var(--card);border:2px solid #D4756B;border-radius:50%;width:42px;height:42px;cursor:pointer;overflow:hidden;padding:0;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .3s}
 .profile-btn:hover{border-color:#E88FAD;box-shadow:0 0 12px rgba(232,143,173,.3)}
 .profile-fallback{font-size:16px;font-weight:700;color:#E88FAD;z-index:1}
 .profile-btn img+.profile-fallback{z-index:0}
 .profile-label{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#D4756B,#E88FAD);color:#fff;font-size:8px;font-weight:700;padding:1px 6px;border-radius:6px;line-height:1.2;z-index:2}
-/* Responsive Layout */
-.app-shell{min-height:100vh;background:#1a1612;display:flex;justify-content:center}
+.theme-switch{display:flex;align-items:center;background:var(--bg3);border:1px solid var(--card-border);border-radius:22px;padding:3px;cursor:pointer;gap:2px;transition:all .3s}
+.theme-switch span{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;font-size:15px;transition:all .25s}
+.theme-switch span.on{background:var(--card);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.credit-footer{background:var(--bg3);border-top:1px solid var(--card-border);padding:16px 20px;text-align:center;transition:all .3s}
+.app-shell{min-height:100vh;background:var(--bg1);display:flex;justify-content:center;transition:background .3s}
 .app-main{width:100%;max-width:480px;position:relative}
 .pc-sidebar{display:none}
 @media(min-width:768px){
   .app-shell{gap:0}
-  .app-main{max-width:480px;border-left:1px solid #3d342920;border-right:1px solid #3d342920}
+  .app-main{max-width:480px;border-left:1px solid var(--sidebar-bd);border-right:1px solid var(--sidebar-bd)}
   .pc-sidebar{display:flex;flex-direction:column;width:280px;padding:32px 24px;position:sticky;top:0;height:100vh;overflow-y:auto}
-  .pc-sidebar-left{border-right:1px solid #3d342920}
-  .pc-sidebar-right{border-left:1px solid #3d342920}
-  .tab-bar{max-width:480px}
-  .modal-sheet{max-width:480px}
+  .pc-sidebar-left{border-right:1px solid var(--sidebar-bd)}
+  .pc-sidebar-right{border-left:1px solid var(--sidebar-bd)}
+  .tab-bar{max-width:480px}.modal-sheet{max-width:480px}
 }
-@media(min-width:1100px){
-  .pc-sidebar{width:320px;padding:40px 28px}
-}
-
+@media(min-width:1100px){.pc-sidebar{width:320px;padding:40px 28px}}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -96,15 +127,14 @@ const {useState,useEffect,useRef,useCallback}=React;
  *    - 규칙: allow read, write: if request.auth != null;
  */
 const CONFIG = {
-  GOOGLE_CLIENT_ID: "892450271971-cq5oggb0vgnnkcbtjlm51t6h4qg393c1.apps.googleusercontent.com",
+  GOOGLE_CLIENT_ID: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
   FIREBASE: {
-    apiKey: "AIzaSyArbvaD2OAhKqCclGBcaiyvQT1bIvKx_uY",
-    authDomain: "blog-writing-challenge.firebaseapp.com",
-    projectId: "blog-writing-challenge",
-    storageBucket: "blog-writing-challenge.firebasestorage.app",
-    messagingSenderId: "538960448175",
-    appId: "1:538960448175:web:71bb41ae88a2f836fde25a", // 쉼표 추가됨
-    measurementId: "G-3G0JSB6GE1"
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "000000000",
+    appId: "YOUR_APP_ID"
   }
 };
 
@@ -325,34 +355,39 @@ const AIService = {
 };
 
 // ===== LOGIN SCREEN =====
-function LoginScreen({onLogin}){
+function LoginScreen({onLogin,theme,toggleTheme}){
   const btnRef=useRef(null);const[ready,setReady]=useState(false);
   useEffect(()=>{let a=0;const tryInit=()=>{if(window.google&&window.google.accounts){window.google.accounts.id.initialize({client_id:CONFIG.GOOGLE_CLIENT_ID,callback:r=>{const p=decodeJwt(r.credential);if(p)onLogin({id:p.sub,name:p.name,email:p.email,picture:p.picture});}});setReady(true);if(btnRef.current)window.google.accounts.id.renderButton(btnRef.current,{type:"standard",theme:"filled_black",size:"large",text:"signin_with",shape:"pill",width:300,locale:"ko"});}else if(a<50){a++;setTimeout(tryInit,200);}};tryInit();},[]);
   return(
-    <div style={{minHeight:"100vh",background:"#1a1612",display:"flex",alignItems:"center",justifyContent:"center",padding:24}}>
-      <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.12) 0%,transparent 60%)",pointerEvents:"none"}}/>
+    <div style={{minHeight:"100vh",background:"var(--bg1)",display:"flex",alignItems:"center",justifyContent:"center",padding:24}}>
+      <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.06) 0%,transparent 60%)",pointerEvents:"none"}}/>
       <div style={{textAlign:"center",maxWidth:380,width:"100%",position:"relative",zIndex:1}}>
         <div style={{fontSize:64,marginBottom:16,animation:"float 3s ease-in-out infinite"}}>✍️</div>
-        <h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:28,color:"#e8dcc8",fontWeight:700,marginBottom:4}}>매일 글쓰기 챌린지</h1>
+        <h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:28,color:"var(--tx1)",fontWeight:700,marginBottom:4}}>매일 글쓰기 챌린지</h1>
         <div className="premium-badge" style={{margin:"8px auto 24px",width:"fit-content"}}>PRO</div>
-        <p style={{fontSize:14,color:"#8b7e6a",lineHeight:1.6,marginBottom:32}}>블로그 글쓰기 습관을 만들어보세요</p>
-        <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:16,padding:"16px 20px",marginBottom:32,display:"flex",alignItems:"center",gap:12,border:"1px solid #3d342930",textAlign:"left"}}>
-          <img src={COACH_IMG} alt="" style={{width:44,height:44,borderRadius:"50%",border:"2px solid #3d3429",objectFit:"cover",flexShrink:0}}/>
-          <div><p style={{fontSize:13,fontWeight:700,color:"#e8dcc8"}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p style={{fontSize:11,color:"#8b7e6a"}}>친절한유성쌤과 함께하는 글쓰기 여정</p></div>
+        <p style={{fontSize:14,color:"var(--tx2)",lineHeight:1.6,marginBottom:32}}>블로그 글쓰기 습관을 만들어보세요</p>
+        <div style={{background:"var(--brand-bg)",borderRadius:16,padding:"16px 20px",marginBottom:32,display:"flex",alignItems:"center",gap:12,border:"1px solid var(--brand-bd)",textAlign:"left"}}>
+          <img src={COACH_IMG} alt="" style={{width:44,height:44,borderRadius:"50%",border:"2px solid var(--bd1)",objectFit:"cover",flexShrink:0}}/>
+          <div><p style={{fontSize:13,fontWeight:700,color:"var(--tx1)"}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p style={{fontSize:11,color:"var(--tx2)"}}>친절한유성쌤과 함께하는 글쓰기 여정</p></div>
         </div>
         <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:32}}>
-          {[{e:"📅",l:"달력"},{e:"🔥",l:"스트릭"},{e:"🤖",l:"AI코칭"},{e:"🏆",l:"랭킹"}].map((f,i)=><div key={i} style={{background:"#252017",borderRadius:12,padding:"12px 4px",border:"1px solid #3d342920"}}><div style={{fontSize:22,marginBottom:2}}>{f.e}</div><p style={{fontSize:10,color:"#8b7e6a"}}>{f.l}</p></div>)}
+          {[{e:"📅",l:"달력"},{e:"🔥",l:"스트릭"},{e:"🤖",l:"AI코칭"},{e:"🏆",l:"랭킹"}].map((f,i)=><div key={i} style={{background:"var(--card)",borderRadius:12,padding:"12px 4px",border:"1px solid var(--card-border)"}}><div style={{fontSize:22,marginBottom:2}}>{f.e}</div><p style={{fontSize:10,color:"var(--tx2)"}}>{f.l}</p></div>)}
         </div>
         <div style={{display:"flex",justifyContent:"center",marginBottom:16}}><div ref={btnRef}></div></div>
-        {!ready&&<p style={{fontSize:12,color:"#5a4f3f"}}>Google 로그인 로딩 중...</p>}
-        <p style={{fontSize:10,color:"#3d3429",marginTop:20}}>로그인하면 클라우드에 데이터가 자동 동기화됩니다</p>
+        {!ready&&<p style={{fontSize:12,color:"var(--tx3)"}}>Google 로그인 로딩 중...</p>}
+        <p style={{fontSize:10,color:"var(--tx3)",marginTop:20}}>로그인하면 클라우드에 데이터가 자동 동기화됩니다</p>
+        <div style={{marginTop:16,display:"flex",justifyContent:"center"}}><div className="theme-switch" onClick={toggleTheme}><span className={theme==="light"?"on":""}>☀️</span><span className={theme==="dark"?"on":""}>🌙</span></div></div>
+        <div style={{marginTop:24,padding:"12px 0",borderTop:"1px solid var(--card-border)"}}>
+          <p style={{fontSize:10,color:"var(--tx3)",lineHeight:1.6}}>기획·개발 <strong style={{color:"var(--tx2)"}}>AI콘텐츠마케팅연구소 유쌤클래스</strong></p>
+          <p style={{fontSize:9,color:"var(--tx3)"}}>Blog Writing Challenge PRO v2.0</p>
+        </div>
       </div>
     </div>
   );
 }
 
 // ===== MAIN APP =====
-function ChallengeApp({user,onLogout}){
+function ChallengeApp({user,onLogout,theme,toggleTheme}){
   const[data,setData]=useState(INIT);
   const[loading,setLoading]=useState(true);
   const[view,setView]=useState("home");
@@ -452,7 +487,7 @@ function ChallengeApp({user,onLogout}){
   const doLogout=()=>{try{window.google.accounts.id.disableAutoSelect();}catch(e){}onLogout();};
   const doReset=()=>{if(confirm("정말 모든 데이터를 초기화하시겠습니까?"))save(INIT);};
 
-  if(loading)return<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#1a1612"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,animation:"pulse 1.5s infinite"}}>✍️</div><p style={{fontFamily:"'Noto Serif KR',serif",color:"#e8dcc8",marginTop:12}}>데이터 동기화 중...</p></div></div>;
+  if(loading)return<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"var(--bg1)"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,animation:"pulse 1.5s infinite"}}>✍️</div><p style={{fontFamily:"'Noto Serif KR',serif",color:"var(--tx1)",marginTop:12}}>데이터 동기화 중...</p></div></div>;
 
   const today=getToday(),done=data.entries[today],lv=getLevel(data.totalDays),nlv=getNextLevel(data.totalDays);
   const prog=nlv?((data.totalDays-lv.min)/(nlv.min-lv.min))*100:100;
@@ -466,54 +501,62 @@ function ChallengeApp({user,onLogout}){
       <div className="pc-sidebar pc-sidebar-left">
         <div style={{marginBottom:32}}>
           <div style={{fontSize:40,marginBottom:12}}>✍️</div>
-          <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,color:"#e8dcc8",marginBottom:4}}>매일 글쓰기</h2>
+          <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,color:"var(--tx1)",marginBottom:4}}>매일 글쓰기</h2>
           <span className="premium-badge">PRO</span>
         </div>
-        <div style={{background:"#252017",borderRadius:16,padding:16,marginBottom:20,border:"1px solid #3d342920"}}>
+        <div style={{background:"var(--card)",borderRadius:16,padding:16,marginBottom:20,border:"1px solid var(--card-border)"}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:12}}>
             <img src={COACH_IMG} alt="" style={{width:36,height:36,borderRadius:"50%",objectFit:"cover"}}/>
-            <div><p style={{fontSize:12,fontWeight:700,color:"#e8dcc8"}}>유쌤클래스</p><p className="text-muted">AI콘텐츠마케팅연구소</p></div>
+            <div><p style={{fontSize:12,fontWeight:700,color:"var(--tx1)"}}>유쌤클래스</p><p className="text-muted">AI콘텐츠마케팅연구소</p></div>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:10}}>
             <img src={user.picture} alt="" style={{width:28,height:28,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display="none";}}/>
-            <div><p style={{fontSize:12,color:"#e8dcc8"}}>{user.name}</p><p className="text-xs">{user.email}</p></div>
+            <div><p style={{fontSize:12,color:"var(--tx1)"}}>{user.name}</p><p className="text-xs">{user.email}</p></div>
           </div>
         </div>
         <div style={{marginBottom:20}}>
           <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:10}}><span style={{fontSize:32}}>{lv.emoji}</span><div><p style={{fontSize:16,fontWeight:900,color:lv.color}}>{lv.name}</p><p className="text-muted">총 {data.totalDays}일 작성</p></div></div>
-          {nlv&&<div style={{height:5,background:"#252017",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3}}/></div>}
+          {nlv&&<div style={{height:5,background:"var(--card)",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3}}/></div>}
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
           <button onClick={()=>generateShareCard(data,user.name)} className="btn-secondary" style={{textAlign:"left",fontSize:12}}>🖼️ SNS 공유카드 다운로드</button>
           <button onClick={()=>DataService.exportData(data)} className="btn-secondary" style={{textAlign:"left",fontSize:12}}>📥 데이터 백업</button>
           <button onClick={()=>fileRef.current.click()} className="btn-secondary" style={{textAlign:"left",fontSize:12}}>📤 데이터 복원</button>
         </div>
-        <div style={{marginTop:"auto",paddingTop:20}}><p className="text-xs" style={{textAlign:"center"}}>Made by AI콘텐츠마케팅연구소<br/>유쌤클래스</p></div>
+        <div style={{marginTop:"auto",paddingTop:20}}>
+          <div className="theme-switch" onClick={toggleTheme} style={{margin:"0 auto 12px",width:"fit-content"}}><span className={theme==="light"?"on":""}>☀️</span><span className={theme==="dark"?"on":""}>🌙</span></div>
+          <p className="text-xs" style={{textAlign:"center",lineHeight:1.6}}>기획·개발<br/><strong style={{color:"var(--tx2)"}}>AI콘텐츠마케팅연구소 유쌤클래스</strong></p>
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="app-main" style={{minHeight:"100vh",background:"#1a1612",color:"#e8dcc8",fontFamily:"'Noto Sans KR',sans-serif",position:"relative",overflow:"hidden"}}>
-      <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.08) 0%,transparent 60%)",pointerEvents:"none",zIndex:0}}/>
+      <div className="app-main" style={{minHeight:"100vh",background:"var(--bg1)",color:"var(--tx1)",fontFamily:"'Noto Sans KR',sans-serif",position:"relative",overflow:"hidden"}}>
+      <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.05) 0%,transparent 60%)",pointerEvents:"none",zIndex:0}}/>
       <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={handleImport}/>
 
       {/* === CELEBRATIONS === */}
-      {celeb&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.7)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,animation:"fadeIn .3s"}}><div style={{textAlign:"center",animation:"slideUp .5s",padding:32}}>{celeb.type==="level"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>{celeb.level.emoji}</div><p style={{fontSize:14,color:"#8b7e6a",letterSpacing:4,marginBottom:8}}>레벨 업!</p><p style={{fontSize:28,fontWeight:900,color:celeb.level.color}}>{celeb.level.name}</p></React.Fragment>}{celeb.type==="badge"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>{celeb.badge.emoji}</div><p style={{fontSize:14,color:"#8b7e6a",letterSpacing:4,marginBottom:8}}>뱃지 획득!</p><p style={{fontSize:24,fontWeight:700}}>{celeb.badge.name}</p></React.Fragment>}{celeb.type==="checkin"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>🔥</div><p style={{fontSize:28,fontWeight:900}}>{celeb.streak}일 연속!</p><p style={{fontSize:14,color:"#8b7e6a",marginTop:8}}>오늘도 멋지게 해냈어요</p></React.Fragment>}</div></div>}
+      {celeb&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.7)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,animation:"fadeIn .3s"}}><div style={{textAlign:"center",animation:"slideUp .5s",padding:32}}>{celeb.type==="level"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>{celeb.level.emoji}</div><p style={{fontSize:14,color:"var(--tx2)",letterSpacing:4,marginBottom:8}}>레벨 업!</p><p style={{fontSize:28,fontWeight:900,color:celeb.level.color}}>{celeb.level.name}</p></React.Fragment>}{celeb.type==="badge"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>{celeb.badge.emoji}</div><p style={{fontSize:14,color:"var(--tx2)",letterSpacing:4,marginBottom:8}}>뱃지 획득!</p><p style={{fontSize:24,fontWeight:700}}>{celeb.badge.name}</p></React.Fragment>}{celeb.type==="checkin"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>🔥</div><p style={{fontSize:28,fontWeight:900}}>{celeb.streak}일 연속!</p><p style={{fontSize:14,color:"var(--tx2)",marginTop:8}}>오늘도 멋지게 해냈어요</p></React.Fragment>}</div></div>}
 
       {/* === MODALS === */}
       {showProf&&<div className="modal-overlay" onClick={()=>setShowProf(false)}><div className="modal-content" style={{maxWidth:300}} onClick={e=>e.stopPropagation()}>
-        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,paddingBottom:16,borderBottom:"1px solid #3d342940"}}><img src={user.picture} alt="" style={{width:40,height:40,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/><div style={{overflow:"hidden"}}><p style={{fontSize:14,fontWeight:700}}>{user.name}</p><p className="text-muted">{user.email}</p></div></div>
-        {data.groupId&&<div style={{marginBottom:12,padding:"8px 12px",background:"#1a1612",borderRadius:10}}><p className="text-muted">그룹: {data.groupName}</p></div>}
+        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,paddingBottom:16,borderBottom:"1px solid var(--bd1)"}}><img src={user.picture} alt="" style={{width:40,height:40,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/><div style={{overflow:"hidden"}}><p style={{fontSize:14,fontWeight:700}}>{user.name}</p><p className="text-muted">{user.email}</p></div></div>
+        {data.groupId&&<div style={{marginBottom:12,padding:"8px 12px",background:"var(--bg1)",borderRadius:10}}><p className="text-muted">그룹: {data.groupName}</p></div>}
         <button onClick={()=>{DataService.exportData(data);setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>📥 데이터 백업 (JSON)</button>
         <button onClick={()=>{fileRef.current.click();setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>📤 데이터 복원 (JSON)</button>
         <button onClick={()=>{generateShareCard(data,user.name);setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>🖼️ SNS 공유 카드 다운로드</button>
         <button onClick={()=>{setShowAdmin(true);setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>📊 관리자 대시보드</button>
         <div className="divider"/>
-        <button onClick={doReset} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left",color:"#8b7e6a"}}>⚙️ 데이터 초기화</button>
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}}>
+          <span style={{fontSize:13,color:"var(--tx2)"}}>화면 모드</span>
+          <div className="theme-switch" onClick={toggleTheme} style={{padding:2}}><span className={theme==="light"?"on":""} style={{width:26,height:26,fontSize:13}}>☀️</span><span className={theme==="dark"?"on":""} style={{width:26,height:26,fontSize:13}}>🌙</span></div>
+        </div>
+        <div className="divider"/>
+        <button onClick={doReset} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left",color:"var(--tx2)"}}>⚙️ 데이터 초기화</button>
         <button onClick={doLogout} style={{width:"100%",padding:"12px 0",background:"#D4756B20",border:"1px solid #D4756B40",borderRadius:10,color:"#D4756B",fontSize:13,fontWeight:600,cursor:"pointer"}}>로그아웃</button>
       </div></div>}
 
       {showChk&&<div className="modal-bottom" onClick={()=>setShowChk(false)}><div className="modal-sheet" onClick={e=>e.stopPropagation()}>
-        <div style={{width:40,height:4,background:"#3d3429",borderRadius:2,margin:"0 auto 24px"}}/>
+        <div style={{width:40,height:4,background:"var(--bd1)",borderRadius:2,margin:"0 auto 24px"}}/>
         <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,marginBottom:20}}>✍️ 오늘의 글쓰기 체크</h3>
         <div style={{marginBottom:16}}><label className="text-muted" style={{display:"block",marginBottom:6}}>블로그 글 URL (선택)</label><input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://blog.naver.com/..." className="input-field"/></div>
         <div style={{marginBottom:24}}><label className="text-muted" style={{display:"block",marginBottom:6}}>오늘의 한 줄 메모 (선택)</label><textarea value={note} onChange={e=>setNote(e.target.value)} placeholder="오늘 글쓰기는 어땠나요?" rows={3} className="input-field" style={{resize:"none"}}/></div>
@@ -529,9 +572,9 @@ function ChallengeApp({user,onLogout}){
 
       {(aiLoad||aiText)&&<div className="modal-overlay" onClick={()=>{setAiText("");setAiLoad(false);}}><div className="modal-content" onClick={e=>e.stopPropagation()}>
         <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:16}}>🤖 AI 글쓰기 코치</h3>
-        {aiLoad?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p style={{color:"#8b7e6a",marginTop:12,fontSize:14}}>AI가 분석 중...</p></div>
+        {aiLoad?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p style={{color:"var(--tx2)",marginTop:12,fontSize:14}}>AI가 분석 중...</p></div>
         :<React.Fragment>
-          <div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"#d4c8b0"}}>{aiText}</div>
+          <div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"var(--ai-text)"}}>{aiText}</div>
           <div style={{marginTop:20,display:"flex",gap:8}}>
             <button onClick={writePost} style={{flex:1,padding:"14px",background:"linear-gradient(135deg,#D4756B,#E88FAD)",border:"none",borderRadius:12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",gap:6}}>
               ✍️ 이 주제로 글 작성하기
@@ -544,7 +587,7 @@ function ChallengeApp({user,onLogout}){
       {/* Blog Post Modal */}
       {showPost&&<div className="modal-overlay" style={{padding:12}} onClick={()=>{setShowPost(false);setPostText("");}}>
         <div className="modal-content" style={{maxWidth:480,maxHeight:"92vh",padding:0}} onClick={e=>e.stopPropagation()}>
-          <div style={{padding:"20px 20px 12px",borderBottom:"1px solid #3d342920",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,background:"#252017",borderRadius:"20px 20px 0 0",zIndex:2}}>
+          <div style={{padding:"20px 20px 12px",borderBottom:"1px solid var(--card-border)",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,background:"var(--card)",borderRadius:"20px 20px 0 0",zIndex:2}}>
             <div>
               <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:17}}>✍️ AI가 작성한 블로그 글</h3>
               {aiTopic&&<p className="text-muted" style={{marginTop:2}}>주제: {aiTopic}</p>}
@@ -554,12 +597,12 @@ function ChallengeApp({user,onLogout}){
           <div style={{padding:"16px 20px",overflowY:"auto",maxHeight:"calc(92vh - 140px)"}}>
             {postLoad?<div style={{textAlign:"center",padding:40}}>
               <div className="spinner"/>
-              <p style={{color:"#8b7e6a",marginTop:16,fontSize:14}}>AI가 글을 작성하고 있어요...</p>
+              <p style={{color:"var(--tx2)",marginTop:16,fontSize:14}}>AI가 글을 작성하고 있어요...</p>
               <p className="text-muted" style={{marginTop:6}}>1500~2000자 분량의 글을 생성 중입니다</p>
             </div>
-            :<div style={{fontSize:14,lineHeight:2,whiteSpace:"pre-wrap",color:"#d4c8b0",wordBreak:"keep-all"}}>{postText}</div>}
+            :<div style={{fontSize:14,lineHeight:2,whiteSpace:"pre-wrap",color:"var(--ai-text)",wordBreak:"keep-all"}}>{postText}</div>}
           </div>
-          {!postLoad&&postText&&<div style={{padding:"12px 20px 20px",borderTop:"1px solid #3d342920",display:"flex",gap:8,position:"sticky",bottom:0,background:"#252017",borderRadius:"0 0 20px 20px"}}>
+          {!postLoad&&postText&&<div style={{padding:"12px 20px 20px",borderTop:"1px solid var(--card-border)",display:"flex",gap:8,position:"sticky",bottom:0,background:"var(--card)",borderRadius:"0 0 20px 20px"}}>
             <button onClick={copyPost} style={{flex:1,padding:"14px",background:copied?"#2d3b2a":"linear-gradient(135deg,#D4756B,#E88FAD)",border:"none",borderRadius:12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",transition:"all .3s"}}>
               {copied?"✅ 복사 완료!":"📋 글 전체 복사"}
             </button>
@@ -572,8 +615,8 @@ function ChallengeApp({user,onLogout}){
       {showReview&&<div className="modal-overlay" onClick={()=>{setShowReview(false);setReviewText("");}}><div className="modal-content" onClick={e=>e.stopPropagation()}>
         <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:4}}>📝 AI 글 리뷰</h3>
         <span className="premium-badge" style={{marginBottom:16,display:"inline-flex"}}>PRO</span>
-        {reviewLoad?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p style={{color:"#8b7e6a",marginTop:12,fontSize:14}}>글을 분석하고 있어요...</p></div>
-        :<div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"#d4c8b0"}}>{reviewText}</div>}
+        {reviewLoad?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p style={{color:"var(--tx2)",marginTop:12,fontSize:14}}>글을 분석하고 있어요...</p></div>
+        :<div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"var(--ai-text)"}}>{reviewText}</div>}
         <button onClick={()=>{setShowReview(false);setReviewText("");}} className="btn-secondary" style={{width:"100%",marginTop:20}}>닫기</button>
       </div></div>}
 
@@ -584,8 +627,8 @@ function ChallengeApp({user,onLogout}){
           <button onClick={createGroup} className="btn-secondary" style={{whiteSpace:"nowrap"}}>만들기</button>
         </div>
         {groups.length>0&&<React.Fragment><p className="text-muted" style={{marginBottom:8}}>참여 가능한 그룹:</p>
-        {groups.map(g=><div key={g.id} onClick={()=>joinGroup(g.id,g.name)} style={{padding:"12px 16px",background:"#1a1612",borderRadius:12,marginBottom:8,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:14}}>{g.name}</span><span style={{fontSize:11,color:"#E88FAD"}}>참여 →</span></div>)}</React.Fragment>}
-        {!db&&<p style={{fontSize:13,color:"#5a4f3f",textAlign:"center",padding:16}}>Firebase 설정 후 그룹 기능을 사용할 수 있습니다</p>}
+        {groups.map(g=><div key={g.id} onClick={()=>joinGroup(g.id,g.name)} style={{padding:"12px 16px",background:"var(--bg1)",borderRadius:12,marginBottom:8,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:14}}>{g.name}</span><span style={{fontSize:11,color:"#E88FAD"}}>참여 →</span></div>)}</React.Fragment>}
+        {!db&&<p style={{fontSize:13,color:"var(--tx3)",textAlign:"center",padding:16}}>Firebase 설정 후 그룹 기능을 사용할 수 있습니다</p>}
         <button onClick={()=>setShowGroupModal(false)} className="btn-secondary" style={{width:"100%",marginTop:12}}>닫기</button>
       </div></div>}
 
@@ -597,9 +640,9 @@ function ChallengeApp({user,onLogout}){
           <div className="card-sm"><p className="text-muted">오늘 작성자</p><p style={{fontSize:24,fontWeight:900,color:"#6B8E4E"}}>{leaderboard.filter(u=>u.entries&&u.entries[today]).length||(done?1:0)}</p></div>
         </div>
         {data.groupId&&<div className="card-sm" style={{marginBottom:16}}><p className="text-muted" style={{marginBottom:8}}>그룹: {data.groupName}</p>
-          {leaderboard.filter(u=>u.groupId===data.groupId).slice(0,5).map((u,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid #3d342920"}}><span style={{fontSize:12,color:"#8b7e6a",width:20}}>{i+1}</span><span style={{fontSize:13,flex:1}}>{u.name||"익명"}</span><span style={{fontSize:13,fontWeight:700,color:"#E88FAD"}}>{u.totalDays||0}일</span></div>)}
+          {leaderboard.filter(u=>u.groupId===data.groupId).slice(0,5).map((u,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid var(--card-border)"}}><span style={{fontSize:12,color:"var(--tx2)",width:20}}>{i+1}</span><span style={{fontSize:13,flex:1}}>{u.name||"익명"}</span><span style={{fontSize:13,fontWeight:700,color:"#E88FAD"}}>{u.totalDays||0}일</span></div>)}
         </div>}
-        <p style={{fontSize:12,color:"#5a4f3f",textAlign:"center"}}>Firebase 연동 시 전체 사용자 통계가 표시됩니다</p>
+        <p style={{fontSize:12,color:"var(--tx3)",textAlign:"center"}}>Firebase 연동 시 전체 사용자 통계가 표시됩니다</p>
         <button onClick={()=>setShowAdmin(false)} className="btn-secondary" style={{width:"100%",marginTop:16}}>닫기</button>
       </div></div>}
 
@@ -609,13 +652,13 @@ function ChallengeApp({user,onLogout}){
       {/* HOME */}
       {view==="home"&&<div style={{padding:"20px 20px 0"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-          <div style={{display:"flex",alignItems:"center",gap:12}}><img src={COACH_IMG} alt="" style={{width:40,height:40,borderRadius:"50%",border:"2px solid #3d3429",objectFit:"cover"}}/><div><p className="text-muted" style={{letterSpacing:2,marginBottom:1,fontSize:10}}>Blog Writing Challenge PRO</p><h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,fontWeight:700}}>매일 글쓰기</h1></div></div>
+          <div style={{display:"flex",alignItems:"center",gap:12}}><img src={COACH_IMG} alt="" style={{width:40,height:40,borderRadius:"50%",border:"2px solid var(--bd1)",objectFit:"cover"}}/><div><p className="text-muted" style={{letterSpacing:2,marginBottom:1,fontSize:10}}>Blog Writing Challenge PRO</p><h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,fontWeight:700}}>매일 글쓰기</h1></div></div>
           <button onClick={()=>setShowProf(!showProf)} className="profile-btn"><img src={user.picture} alt="" style={{width:"100%",height:"100%",objectFit:"cover",position:"absolute",top:0,left:0}} referrerPolicy="no-referrer" onError={e=>{e.target.style.display="none";}}/><span className="profile-fallback">{(user.name||"U")[0]}</span><span className="profile-label">MY</span></button>
         </div>
-        <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:14,padding:"10px 14px",marginBottom:16,display:"flex",alignItems:"center",gap:10,border:"1px solid #3d342930"}}>
+        <div style={{background:"var(--brand-bg)",borderRadius:14,padding:"10px 14px",marginBottom:16,display:"flex",alignItems:"center",gap:10,border:"1px solid var(--brand-bd)"}}>
           <div style={{width:5,height:28,borderRadius:3,background:"linear-gradient(to bottom,#D4756B,#E88FAD)",flexShrink:0}}/>
-          <div style={{flex:1}}><p style={{fontSize:12,fontWeight:700,color:"#e8dcc8"}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p className="text-muted">{user.name}님의 글쓰기 챌린지</p></div>
-          {data.groupId&&<span style={{fontSize:10,color:"#E88FAD",background:"#E88FAD15",padding:"3px 8px",borderRadius:10}}>{data.groupName}</span>}
+          <div style={{flex:1}}><p style={{fontSize:12,fontWeight:700,color:"var(--tx1)"}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p className="text-muted">{user.name}님의 글쓰기 챌린지</p></div>
+          {data.groupId&&<span style={{fontSize:10,color:"#E88FAD",background:"var(--accent-bg)",padding:"3px 8px",borderRadius:10}}>{data.groupName}</span>}
         </div>
 
         {/* Level Card */}
@@ -625,7 +668,7 @@ function ChallengeApp({user,onLogout}){
             <div style={{flex:1}}><p className="text-muted" style={{marginBottom:1}}>현재 등급</p><p style={{fontSize:20,fontWeight:900,color:lv.color}}>{lv.name}</p></div>
             <div style={{textAlign:"right"}}><p style={{fontSize:28,fontWeight:900,fontFamily:"'Noto Serif KR',serif"}}>{data.totalDays}</p><p className="text-muted">총 작성일</p></div>
           </div>
-          {nlv&&<div><div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#8b7e6a",marginBottom:5}}><span>다음: {nlv.emoji} {nlv.name}</span><span>{nlv.min-data.totalDays}일 남음</span></div><div style={{height:5,background:"#1a1612",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3,transition:"width .5s ease"}}/></div></div>}
+          {nlv&&<div><div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"var(--tx2)",marginBottom:5}}><span>다음: {nlv.emoji} {nlv.name}</span><span>{nlv.min-data.totalDays}일 남음</span></div><div style={{height:5,background:"var(--bg1)",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3,transition:"width .5s ease"}}/></div></div>}
         </div>
 
         {/* Stats Row */}
@@ -634,7 +677,7 @@ function ChallengeApp({user,onLogout}){
         </div>
 
         {/* Check-in */}
-        <button onClick={()=>!done&&setShowChk(true)} disabled={!!done} style={{width:"100%",padding:"16px",borderRadius:16,border:"none",fontSize:16,fontWeight:700,cursor:done?"default":"pointer",background:done?"linear-gradient(135deg,#2d3b2a,#2a3328)":"linear-gradient(135deg,#D4756B,#E88FAD)",color:done?"#6B8E4E":"#fff",animation:!done?"glow 2s infinite":"none",transition:"all .3s",marginBottom:12}}>{done?"✅ 오늘 글쓰기 완료!":"✍️ 오늘의 글쓰기 체크하기"}</button>
+        <button onClick={()=>!done&&setShowChk(true)} disabled={!!done} style={{width:"100%",padding:"16px",borderRadius:16,border:"none",fontSize:16,fontWeight:700,cursor:done?"default":"pointer",background:done?"var(--done-bg)":"linear-gradient(135deg,#D4756B,#E88FAD)",color:done?"var(--done-tx)":"#fff",animation:!done?"glow 2s infinite":"none",transition:"all .3s",marginBottom:12}}>{done?"✅ 오늘 글쓰기 완료!":"✍️ 오늘의 글쓰기 체크하기"}</button>
 
         {/* Quick Actions */}
         <div style={{display:"flex",gap:8,marginBottom:16}}>
@@ -646,21 +689,21 @@ function ChallengeApp({user,onLogout}){
         {/* Calendar */}
         <div className="card">
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
-            <button onClick={()=>{if(calM===0){setCalM(11);setCalY(calY-1);}else setCalM(calM-1);}} style={{background:"none",border:"none",color:"#8b7e6a",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>‹</button>
+            <button onClick={()=>{if(calM===0){setCalM(11);setCalY(calY-1);}else setCalM(calM-1);}} style={{background:"none",border:"none",color:"var(--tx2)",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>‹</button>
             <p style={{fontFamily:"'Noto Serif KR',serif",fontSize:15,fontWeight:700}}>{calY}년 {mn[calM]}</p>
-            <button onClick={()=>{if(calM===11){setCalM(0);setCalY(calY+1);}else setCalM(calM+1);}} style={{background:"none",border:"none",color:"#8b7e6a",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>›</button>
+            <button onClick={()=>{if(calM===11){setCalM(0);setCalY(calY+1);}else setCalM(calM+1);}} style={{background:"none",border:"none",color:"var(--tx2)",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>›</button>
           </div>
           <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3,textAlign:"center"}}>
-            {["일","월","화","수","목","금","토"].map(d=><div key={d} style={{fontSize:10,color:"#5a4f3f",padding:"3px 0"}}>{d}</div>)}
+            {["일","월","화","수","목","금","토"].map(d=><div key={d} style={{fontSize:10,color:"var(--tx3)",padding:"3px 0"}}>{d}</div>)}
             {Array.from({length:fd},(_,i)=><div key={"e"+i}/>)}
-            {Array.from({length:dim},(_,i)=>{const day=i+1,k=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(day).padStart(2,"0"),c=!!data.entries[k],it=k===today;return<div key={day} onClick={()=>c&&setSelDay(k)} style={{width:34,height:34,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,cursor:c?"pointer":"default",background:c?"linear-gradient(135deg,#D4756B,#E88FAD)":it?"#3d3429":"transparent",color:c?"#fff":it?"#e8dcc8":"#6b5f4f",fontWeight:it||c?700:400,margin:"0 auto"}}>{day}</div>;})}
+            {Array.from({length:dim},(_,i)=>{const day=i+1,k=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(day).padStart(2,"0"),c=!!data.entries[k],it=k===today;return<div key={day} onClick={()=>c&&setSelDay(k)} style={{width:34,height:34,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,cursor:c?"pointer":"default",background:c?"linear-gradient(135deg,#D4756B,#E88FAD)":it?"var(--cal-today)":"transparent",color:c?"#fff":it?"var(--cal-active-tx)":"var(--cal-tx)",fontWeight:it||c?700:400,margin:"0 auto"}}>{day}</div>;})}
           </div>
         </div>
 
         {/* Badges */}
         <div style={{marginTop:16}}><h3 className="section-title">🏅 획득한 뱃지</h3>
           <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
-            {BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:10,background:e?"#252017":"#1e1a14",borderRadius:12,border:"1px solid "+(e?"#3d3429":"#2a231820"),opacity:e?1:.4}}><div style={{fontSize:26,marginBottom:3,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:9,color:e?"#e8dcc8":"#5a4f3f",lineHeight:1.2}}>{b.name}</p></div>;})}
+            {BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:10,background:e?"var(--earned-bg)":"var(--empty-bg)",borderRadius:12,border:"1px solid "+(e?"var(--earned-bd)":"transparent"),opacity:e?1:.4}}><div style={{fontSize:26,marginBottom:3,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:9,color:e?"var(--tx1)":"var(--tx3)",lineHeight:1.2}}>{b.name}</p></div>;})}
           </div>
         </div>
       </div>}
@@ -678,7 +721,7 @@ function ChallengeApp({user,onLogout}){
         <div className="card" style={{marginBottom:16,padding:16}}>
           <p style={{fontSize:13,fontWeight:700,marginBottom:10}}>🔥 트렌드 키워드</p>
           <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
-            {TREND_KEYWORDS.map((kw,i)=><button key={i} onClick={()=>getAi(kw)} style={{padding:"6px 12px",background:"#1a1612",border:"1px solid #3d3429",borderRadius:20,color:"#d4c8b0",fontSize:12,cursor:"pointer"}}>#{kw}</button>)}
+            {TREND_KEYWORDS.map((kw,i)=><button key={i} onClick={()=>getAi(kw)} style={{padding:"6px 12px",background:"var(--bg1)",border:"1px solid var(--bd1)",borderRadius:20,color:"var(--ai-text)",fontSize:12,cursor:"pointer"}}>#{kw}</button>)}
           </div>
         </div>
 
@@ -696,11 +739,11 @@ function ChallengeApp({user,onLogout}){
 
         {/* Topic Categories */}
         {TOPICS.map((c,ci)=><div key={ci} style={{marginBottom:12}}>
-          <div onClick={()=>setTopicOpen(topicOpen===ci?null:ci)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",background:"#252017",borderRadius:topicOpen===ci?"14px 14px 0 0":"14px",cursor:"pointer",border:"1px solid #3d342920"}}>
-            <span style={{fontSize:22}}>{c.icon}</span><span style={{flex:1,fontWeight:600,fontSize:14}}>{c.name}</span><span className="text-muted">{c.topics.length}개</span><span style={{color:"#5a4f3f",transform:topicOpen===ci?"rotate(180deg)":"rotate(0deg)",transition:".2s",display:"inline-block",fontSize:12}}>▼</span>
+          <div onClick={()=>setTopicOpen(topicOpen===ci?null:ci)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",background:"var(--card)",borderRadius:topicOpen===ci?"14px 14px 0 0":"14px",cursor:"pointer",border:"1px solid var(--card-border)"}}>
+            <span style={{fontSize:22}}>{c.icon}</span><span style={{flex:1,fontWeight:600,fontSize:14}}>{c.name}</span><span className="text-muted">{c.topics.length}개</span><span style={{color:"var(--tx3)",transform:topicOpen===ci?"rotate(180deg)":"rotate(0deg)",transition:".2s",display:"inline-block",fontSize:12}}>▼</span>
           </div>
-          {topicOpen===ci&&<div style={{background:"#1e1a14",borderRadius:"0 0 14px 14px",padding:"6px 0",border:"1px solid #3d342920",borderTop:"none"}}>
-            {c.topics.map((t,ti)=><div key={ti} onClick={()=>getAi(t)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",cursor:"pointer",borderBottom:ti<c.topics.length-1?"1px solid #252017":"none"}}><span style={{fontSize:13,color:"#d4c8b0"}}>{t}</span><span style={{fontSize:11,color:"#E88FAD",whiteSpace:"nowrap",marginLeft:8}}>AI →</span></div>)}
+          {topicOpen===ci&&<div style={{background:"var(--empty-bg)",borderRadius:"0 0 14px 14px",padding:"6px 0",border:"1px solid var(--card-border)",borderTop:"none"}}>
+            {c.topics.map((t,ti)=><div key={ti} onClick={()=>getAi(t)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",cursor:"pointer",borderBottom:ti<c.topics.length-1?"1px solid var(--card-border)":"none"}}><span style={{fontSize:13,color:"var(--ai-text)"}}>{t}</span><span style={{fontSize:11,color:"#E88FAD",whiteSpace:"nowrap",marginLeft:8}}>AI →</span></div>)}
           </div>}
         </div>)}
       </div>}
@@ -713,37 +756,37 @@ function ChallengeApp({user,onLogout}){
           <button onClick={()=>{loadLeaderboard();}} className="btn-secondary" style={{flex:1}}>🔄 새로고침</button>
           <button onClick={()=>{setShowGroupModal(true);loadGroups();}} className="btn-secondary" style={{flex:1}}>👥 그룹 참여</button>
         </div>
-        {data.groupId&&<div style={{background:"#252017",borderRadius:12,padding:"10px 14px",marginBottom:16,border:"1px solid #3d342920"}}><p style={{fontSize:13}}>📌 현재 그룹: <b style={{color:"#E88FAD"}}>{data.groupName}</b></p></div>}
+        {data.groupId&&<div style={{background:"var(--card)",borderRadius:12,padding:"10px 14px",marginBottom:16,border:"1px solid var(--card-border)"}}><p style={{fontSize:13}}>📌 현재 그룹: <b style={{color:"#E88FAD"}}>{data.groupName}</b></p></div>}
 
         {/* My Card */}
-        <div className="card" style={{marginBottom:16,background:"linear-gradient(145deg,#252017,#2a2318)"}}>
+        <div className="card" style={{marginBottom:16,background:"var(--lv-bg)"}}>
           <div style={{display:"flex",alignItems:"center",gap:12}}>
             <img src={user.picture} alt="" style={{width:44,height:44,borderRadius:"50%",border:"2px solid #D4756B",objectFit:"cover"}} referrerPolicy="no-referrer"/>
-            <div style={{flex:1}}><p style={{fontSize:14,fontWeight:700}}>{user.name} <span style={{fontSize:11,color:"#8b7e6a"}}>(나)</span></p><p className="text-muted">{lv.emoji} {lv.name}</p></div>
+            <div style={{flex:1}}><p style={{fontSize:14,fontWeight:700}}>{user.name} <span style={{fontSize:11,color:"var(--tx2)"}}>(나)</span></p><p className="text-muted">{lv.emoji} {lv.name}</p></div>
             <div style={{textAlign:"right"}}><p style={{fontSize:24,fontWeight:900,color:"#E88FAD"}}>{data.totalDays}</p><p className="text-xs">총 작성일</p></div>
           </div>
         </div>
 
         {/* Leaderboard */}
         {lbLoading?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p className="text-muted" style={{marginTop:12}}>랭킹 로딩 중...</p></div>
-        :leaderboard.length>0?<div className="card">{leaderboard.map((u,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:i<leaderboard.length-1?"1px solid #3d342920":"none"}}>
+        :leaderboard.length>0?<div className="card">{leaderboard.map((u,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:i<leaderboard.length-1?"1px solid var(--card-border)":"none"}}>
           <span style={{fontSize:i<3?20:14,width:28,textAlign:"center"}}>{i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)}</span>
-          {u.picture?<img src={u.picture} alt="" style={{width:32,height:32,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/>:<div style={{width:32,height:32,borderRadius:"50%",background:"#3d3429",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>?</div>}
+          {u.picture?<img src={u.picture} alt="" style={{width:32,height:32,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/>:<div style={{width:32,height:32,borderRadius:"50%",background:"var(--cal-today)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>?</div>}
           <div style={{flex:1}}><p style={{fontSize:13,fontWeight:u.id===user.id?700:400}}>{u.name||"익명"}{u.id===user.id?" ⭐":""}</p></div>
           <div style={{textAlign:"right"}}><p style={{fontSize:16,fontWeight:700,color:"#E88FAD"}}>{u.totalDays||0}일</p><p className="text-xs">🔥{u.currentStreak||0}</p></div>
         </div>)}</div>
-        :<div style={{textAlign:"center",padding:32}}><p style={{fontSize:40,marginBottom:8}}>🏆</p><p style={{color:"#8b7e6a",fontSize:14}}>Firebase 연동 후 랭킹이 표시됩니다</p><p className="text-muted" style={{marginTop:4}}>현재는 내 기록만 확인 가능합니다</p></div>}
+        :<div style={{textAlign:"center",padding:32}}><p style={{fontSize:40,marginBottom:8}}>🏆</p><p style={{color:"var(--tx2)",fontSize:14}}>Firebase 연동 후 랭킹이 표시됩니다</p><p className="text-muted" style={{marginTop:4}}>현재는 내 기록만 확인 가능합니다</p></div>}
       </div>}
 
       {/* STATS */}
       {view==="stats"&&<div style={{padding:"20px 20px 0"}}>
         <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,marginBottom:20}}>📊 나의 글쓰기 통계</h2>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
-          {[{l:"총 작성일",v:data.totalDays,u:"일",c:"#E88FAD"},{l:"현재 연속",v:data.currentStreak,u:"일",c:"#D4756B"},{l:"최고 연속",v:data.maxStreak,u:"일",c:"#6B8E4E"},{l:"획득 뱃지",v:badges.length,u:"/"+BADGES.length,c:"#8B9E6B"}].map((s,i)=><div key={i} className="card-sm" style={{padding:18}}><p className="text-muted" style={{marginBottom:6}}>{s.l}</p><p style={{fontSize:32,fontWeight:900,fontFamily:"'Noto Serif KR',serif",color:s.c}}>{s.v}<span style={{fontSize:13,fontWeight:400,color:"#8b7e6a"}}>{s.u}</span></p></div>)}
+          {[{l:"총 작성일",v:data.totalDays,u:"일",c:"#E88FAD"},{l:"현재 연속",v:data.currentStreak,u:"일",c:"#D4756B"},{l:"최고 연속",v:data.maxStreak,u:"일",c:"#6B8E4E"},{l:"획득 뱃지",v:badges.length,u:"/"+BADGES.length,c:"#8B9E6B"}].map((s,i)=><div key={i} className="card-sm" style={{padding:18}}><p className="text-muted" style={{marginBottom:6}}>{s.l}</p><p style={{fontSize:32,fontWeight:900,fontFamily:"'Noto Serif KR',serif",color:s.c}}>{s.v}<span style={{fontSize:13,fontWeight:400,color:"var(--tx2)"}}>{s.u}</span></p></div>)}
         </div>
         <div className="card" style={{marginBottom:16}}>
           <h3 className="section-title">월별 작성 현황</h3>
-          {(()=>{const ms=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);const y=d.getFullYear(),m=d.getMonth(),dm=getDIM(y,m);let cnt=0;for(let day=1;day<=dm;day++){if(data.entries[y+"-"+String(m+1).padStart(2,"0")+"-"+String(day).padStart(2,"0")])cnt++;}ms.push({l:(m+1)+"월",c:cnt,t:dm});}const mx=Math.max(...ms.map(m=>m.c),1);return ms.map((m,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}><span style={{fontSize:11,color:"#8b7e6a",width:28,textAlign:"right"}}>{m.l}</span><div style={{flex:1,height:18,background:"#1a1612",borderRadius:5,overflow:"hidden"}}><div style={{height:"100%",width:(m.c/mx*100)+"%",background:"linear-gradient(90deg,#D4756B,#E88FAD)",borderRadius:5,transition:"width .5s",minWidth:m.c>0?4:0}}/></div><span style={{fontSize:11,color:"#8b7e6a",width:44,textAlign:"right"}}>{m.c}/{m.t}</span></div>);})()}
+          {(()=>{const ms=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);const y=d.getFullYear(),m=d.getMonth(),dm=getDIM(y,m);let cnt=0;for(let day=1;day<=dm;day++){if(data.entries[y+"-"+String(m+1).padStart(2,"0")+"-"+String(day).padStart(2,"0")])cnt++;}ms.push({l:(m+1)+"월",c:cnt,t:dm});}const mx=Math.max(...ms.map(m=>m.c),1);return ms.map((m,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}><span style={{fontSize:11,color:"var(--tx2)",width:28,textAlign:"right"}}>{m.l}</span><div style={{flex:1,height:18,background:"var(--bg1)",borderRadius:5,overflow:"hidden"}}><div style={{height:"100%",width:(m.c/mx*100)+"%",background:"linear-gradient(90deg,#D4756B,#E88FAD)",borderRadius:5,transition:"width .5s",minWidth:m.c>0?4:0}}/></div><span style={{fontSize:11,color:"var(--tx2)",width:44,textAlign:"right"}}>{m.c}/{m.t}</span></div>);})()}
         </div>
         <div className="card" style={{marginBottom:16}}>
           <h3 className="section-title">요일별 패턴</h3>
@@ -753,7 +796,7 @@ function ChallengeApp({user,onLogout}){
         </div>
         <div className="card">
           <h3 className="section-title">성장 레벨</h3>
-          {LEVELS.map((l,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<LEVELS.length-1?"1px solid #3d342920":"none",opacity:data.totalDays>=l.min?1:.4}}><span style={{fontSize:24}}>{l.emoji}</span><div style={{flex:1}}><p style={{fontSize:13,fontWeight:600,color:data.totalDays>=l.min?l.color:"#5a4f3f"}}>{l.name}</p><p className="text-xs">{l.min}일 이상</p></div>{data.totalDays>=l.min&&<span style={{color:"#6B8E4E",fontSize:14}}>✓</span>}</div>)}
+          {LEVELS.map((l,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<LEVELS.length-1?"1px solid var(--card-border)":"none",opacity:data.totalDays>=l.min?1:.4}}><span style={{fontSize:24}}>{l.emoji}</span><div style={{flex:1}}><p style={{fontSize:13,fontWeight:600,color:data.totalDays>=l.min?l.color:"var(--tx3)"}}>{l.name}</p><p className="text-xs">{l.min}일 이상</p></div>{data.totalDays>=l.min&&<span style={{color:"#6B8E4E",fontSize:14}}>✓</span>}</div>)}
         </div>
       </div>}
 
@@ -766,34 +809,34 @@ function ChallengeApp({user,onLogout}){
             <span className="icon">{n.icon}</span><span className="label">{n.label}</span>
           </button>)}
         </div>
-        <p style={{textAlign:"center",fontSize:8,color:"#3d3429",marginTop:4}}>Made by AI콘텐츠마케팅연구소 유쌤클래스</p>
+        <p style={{textAlign:"center",fontSize:8,color:"var(--tx3)",marginTop:4,lineHeight:1.4}}>기획·개발 AI콘텐츠마케팅연구소 유쌤클래스</p>
       </div>
       </div>
 
       {/* PC Right Sidebar */}
       <div className="pc-sidebar pc-sidebar-right">
-        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"#e8dcc8",marginBottom:16}}>🔥 오늘의 현황</h3>
-        <div style={{background:"#252017",borderRadius:14,padding:16,marginBottom:16,border:"1px solid #3d342920"}}>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"var(--tx1)",marginBottom:16}}>🔥 오늘의 현황</h3>
+        <div style={{background:"var(--card)",borderRadius:14,padding:16,marginBottom:16,border:"1px solid var(--card-border)"}}>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-            <span style={{fontSize:13,color:"#8b7e6a"}}>오늘 체크</span>
-            <span style={{fontSize:14,fontWeight:700,color:done?"#6B8E4E":"#D4756B"}}>{done?"완료 ✅":"미완료"}</span>
+            <span style={{fontSize:13,color:"var(--tx2)"}}>오늘 체크</span>
+            <span style={{fontSize:14,fontWeight:700,color:done?"var(--done-tx)":"#D4756B"}}>{done?"완료 ✅":"미완료"}</span>
           </div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
-            <span style={{fontSize:13,color:"#8b7e6a"}}>연속 작성</span>
+            <span style={{fontSize:13,color:"var(--tx2)"}}>연속 작성</span>
             <span style={{fontSize:14,fontWeight:700}}>🔥 {data.currentStreak}일</span>
           </div>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span style={{fontSize:13,color:"#8b7e6a"}}>최고 기록</span>
+            <span style={{fontSize:13,color:"var(--tx2)"}}>최고 기록</span>
             <span style={{fontSize:14,fontWeight:700}}>⚡ {data.maxStreak}일</span>
           </div>
         </div>
-        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"#e8dcc8",marginBottom:12}}>🏅 뱃지 현황</h3>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"var(--tx1)",marginBottom:12}}>🏅 뱃지 현황</h3>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:20}}>
-          {BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:10,background:e?"#252017":"#1e1a14",borderRadius:10,opacity:e?1:.35,border:"1px solid "+(e?"#3d3429":"transparent")}}><div style={{fontSize:22,marginBottom:2,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:9,color:e?"#e8dcc8":"#5a4f3f"}}>{b.name}</p></div>;})}
+          {BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:10,background:e?"var(--earned-bg)":"var(--empty-bg)",borderRadius:10,opacity:e?1:.35,border:"1px solid "+(e?"var(--earned-bd)":"transparent")}}><div style={{fontSize:22,marginBottom:2,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:9,color:e?"var(--tx1)":"var(--tx3)"}}>{b.name}</p></div>;})}
         </div>
-        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"#e8dcc8",marginBottom:12}}>💡 추천 주제</h3>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,color:"var(--tx1)",marginBottom:12}}>💡 추천 주제</h3>
         <div style={{display:"flex",flexDirection:"column",gap:6}}>
-          {TREND_KEYWORDS.slice(0,5).map((kw,i)=><button key={i} onClick={()=>{setView("topics");getAi(kw);}} style={{padding:"8px 12px",background:"#252017",border:"1px solid #3d342920",borderRadius:10,color:"#d4c8b0",fontSize:12,cursor:"pointer",textAlign:"left"}}>#{kw}</button>)}
+          {TREND_KEYWORDS.slice(0,5).map((kw,i)=><button key={i} onClick={()=>{setView("topics");getAi(kw);}} style={{padding:"8px 12px",background:"var(--card)",border:"1px solid var(--card-border)",borderRadius:10,color:"var(--ai-text)",fontSize:12,cursor:"pointer",textAlign:"left"}}>#{kw}</button>)}
         </div>
       </div>
     </div>
@@ -803,10 +846,13 @@ function ChallengeApp({user,onLogout}){
 // ===== ROOT =====
 function App(){
   const[user,setUser]=useState(()=>{try{const r=localStorage.getItem("bc-user");return r?JSON.parse(r):null;}catch(e){return null;}});
+  const[theme,setTheme]=useState(()=>{try{return localStorage.getItem("bc-theme")||"light";}catch(e){return "light";}});
+  useEffect(()=>{document.documentElement.setAttribute("data-theme",theme);try{localStorage.setItem("bc-theme",theme);}catch(e){}},[theme]);
+  const toggleTheme=()=>setTheme(t=>t==="light"?"dark":"light");
   const login=u=>{setUser(u);localStorage.setItem("bc-user",JSON.stringify(u));};
   const logout=()=>{setUser(null);localStorage.removeItem("bc-user");};
-  if(!user)return<LoginScreen onLogin={login}/>;
-  return<ChallengeApp user={user} onLogout={logout}/>;
+  if(!user)return<LoginScreen onLogin={login} theme={theme} toggleTheme={toggleTheme}/>;
+  return<ChallengeApp user={user} onLogout={logout} theme={theme} toggleTheme={toggleTheme}/>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
 </script></body></html>
