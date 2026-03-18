@@ -2,182 +2,636 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>매일 글쓰기 챌린지 - AI콘텐츠마케팅연구소 유쌤클래스</title>
-<meta name="description" content="친절한유성쌤과 함께하는 블로그 글쓰기 챌린지 앱. 매일 글쓰기 습관을 만들어보세요!">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>매일 글쓰기 챌린지 PRO - AI콘텐츠마케팅연구소 유쌤클래스</title>
+<meta name="description" content="친절한유성쌤과 함께하는 블로그 글쓰기 챌린지 앱">
 <meta name="theme-color" content="#1a1612">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoi66ek7J28IOq4gOyTsOq4sCDssYzrprDsp4AiLCJzaG9ydF9uYW1lIjoi6riA7JOw6riwIOyxjOumsOyngCIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMWExNjEyIiwidGhlbWVfY29sb3IiOiIjMWExNjEyIn0=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body,#root{min-height:100vh;background:#1a1612}
-body{font-family:'Noto Sans KR',sans-serif}
+html,body,#root{min-height:100vh;min-height:100dvh;background:#1a1612}
+body{font-family:'Noto Sans KR',sans-serif;overflow-x:hidden}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
 @keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(232,143,173,.3)}50%{box-shadow:0 0 40px rgba(232,143,173,.6)}}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes confettiDrop{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#3d3429;border-radius:4px}
-input,textarea{font-family:'Noto Sans KR',sans-serif}
+input,textarea,select{font-family:'Noto Sans KR',sans-serif}
+.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:linear-gradient(to top,#1a1612 80%,transparent);padding:12px 0 8px;z-index:100}
+.tab-bar-inner{display:flex;justify-content:space-around;align-items:center;padding:0 12px}
+.tab-btn{background:none;border:none;border-radius:14px;padding:8px 16px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .2s;position:relative}
+.tab-btn.active{background:#3d3429}
+.tab-btn span.icon{font-size:20px}
+.tab-btn span.label{font-size:9px;color:#5a4f3f;font-weight:400}
+.tab-btn.active span.label{color:#e8dcc8;font-weight:700}
+.badge-dot{position:absolute;top:4px;right:12px;width:7px;height:7px;background:#E88FAD;border-radius:50%}
+.card{background:#252017;border-radius:20px;padding:20px;border:1px solid #3d342920;margin-bottom:16px}
+.card-sm{background:#252017;border-radius:16px;padding:16px;border:1px solid #3d342920}
+.btn-primary{width:100%;padding:16px;background:linear-gradient(135deg,#D4756B,#E88FAD);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:all .3s}
+.btn-secondary{padding:10px 20px;background:#3d3429;border:none;border-radius:12px;color:#e8dcc8;font-size:13px;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{background:#4d4439}
+.premium-badge{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#F0997B,#ED93B1);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:900;padding:20px;animation:fadeIn .2s}
+.modal-bottom{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:flex;align-items:flex-end;justify-content:center;z-index:900}
+.modal-content{background:#252017;border-radius:20px;padding:24px;max-width:420px;width:100%;max-height:80vh;overflow-y:auto;animation:slideUp .3s}
+.modal-sheet{background:#252017;width:100%;max-width:480px;border-radius:24px 24px 0 0;padding:32px 24px;animation:slideUp .3s}
+.input-field{width:100%;padding:12px 16px;background:#1a1612;border:1px solid #3d3429;border-radius:12px;color:#e8dcc8;font-size:14px;outline:none}
+.input-field:focus{border-color:#D4756B}
+.section-title{font-family:'Noto Serif KR',serif;font-size:16px;margin-bottom:14px}
+.text-muted{font-size:11px;color:#8b7e6a}
+.text-xs{font-size:10px;color:#5a4f3f}
+.divider{height:1px;background:#3d342930;margin:16px 0}
+.spinner{width:24px;height:24px;border:2px solid #3d3429;border-top-color:#E88FAD;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto}
+.share-canvas{position:absolute;left:-9999px;top:-9999px}
 </style>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
 </head>
 <body>
 <div id="root"></div>
+<canvas id="shareCanvas" class="share-canvas" width="1080" height="1080"></canvas>
 <script type="text/babel">
-const {useState,useEffect,useRef}=React;
+const {useState,useEffect,useRef,useCallback}=React;
 
 /**
- * ========================================
- *  Google Client ID 설정 (필수!)
- * ========================================
- *  1. https://console.cloud.google.com 접속
- *  2. 프로젝트 생성 후 "API 및 서비스 > 사용자 인증 정보"
- *  3. "OAuth 클라이언트 ID" 생성 (웹 애플리케이션)
- *  4. 승인된 JavaScript 원본에 호스팅 URL 추가
- *  5. 아래 값을 발급받은 Client ID로 교체
+ * ============ 설정 (호스팅 전 필수 수정) ============
+ * 
+ * 1. Google Client ID: console.cloud.google.com에서 발급
+ * 2. Firebase Config: console.firebase.google.com에서 프로젝트 생성 후 복사
+ *    - Firestore Database 활성화 필요
+ *    - 규칙: allow read, write: if request.auth != null;
  */
-const GOOGLE_CLIENT_ID="892450271971-i6lah1skgjhv6suo1id3efncdmqktqco.apps.googleusercontent.com";
+const CONFIG = {
+  GOOGLE_CLIENT_ID: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+  FIREBASE: {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "000000000",
+    appId: "YOUR_APP_ID"
+  }
+};
+
+// Firebase 초기화
+let db = null;
+try {
+  if (CONFIG.FIREBASE.apiKey !== "YOUR_API_KEY") {
+    firebase.initializeApp(CONFIG.FIREBASE);
+    db = firebase.firestore();
+  }
+} catch(e) { console.log("Firebase not configured, using localStorage only"); }
 
 const COACH_IMG="data:image/jpeg;base64,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";
 
 function decodeJwt(t){try{const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')));}catch(e){return null;}}
 
+// === 상수 ===
 const LEVELS=[{name:"씨앗",emoji:"🌱",min:0,color:"#8B9E6B"},{name:"새싹",emoji:"🌿",min:3,color:"#6B8E4E"},{name:"줄기",emoji:"🌾",min:7,color:"#4A7C3F"},{name:"꽃봉오리",emoji:"🌷",min:14,color:"#D4756B"},{name:"만개",emoji:"🌸",min:30,color:"#E88FAD"},{name:"열매",emoji:"🍎",min:60,color:"#E05555"},{name:"나무",emoji:"🌳",min:100,color:"#2D6B3F"},{name:"숲",emoji:"🏔️",min:200,color:"#1B4D2E"}];
 const BADGES=[{id:"first",name:"첫 발자국",emoji:"👣",desc:"첫 글 작성",check:s=>s.totalDays>=1},{id:"week",name:"일주일 전사",emoji:"⚔️",desc:"7일 연속",check:s=>s.maxStreak>=7},{id:"month",name:"한 달의 기적",emoji:"✨",desc:"30일 연속",check:s=>s.maxStreak>=30},{id:"fifty",name:"반백 달성",emoji:"🏅",desc:"총 50일",check:s=>s.totalDays>=50},{id:"hundred",name:"백일장 영웅",emoji:"🏆",desc:"총 100일",check:s=>s.totalDays>=100},{id:"earlybird",name:"얼리버드",emoji:"🐦",desc:"오전 6시 전",check:s=>s.earlyBird},{id:"nightowl",name:"올빼미 작가",emoji:"🦉",desc:"자정 이후",check:s=>s.nightOwl},{id:"comeback",name:"불사조",emoji:"🔥",desc:"3일 쉬고 복귀",check:s=>s.comeback}];
-const TOPICS=[{name:"일상 에세이",icon:"☕",topics:["오늘 먹은 점심에서 발견한 이야기","나만의 아침 루틴 소개하기","최근 나를 웃게 만든 순간","오늘 감사한 3가지","계절의 변화를 느낀 순간"]},{name:"전문 지식",icon:"💡",topics:["AI 마케팅 최신 트렌드 분석","블로그 SEO 최적화 핵심 팁","SNS 알고리즘 이해하기","퍼스널 브랜딩 전략","GEO 마케팅이란?"]},{name:"리뷰/추천",icon:"⭐",topics:["이번 주 읽은 책 리뷰","내가 매일 쓰는 앱 추천","업무 효율을 높이는 도구","최근 다녀온 곳 후기","내 인생 맛집 베스트 3"]},{name:"성장/회고",icon:"🚀",topics:["올해 이루고 싶은 목표","지난 한 주 돌아보기","실패에서 배운 교훈","5년 후 나에게 쓰는 편지","내가 극복한 두려움 이야기"]},{name:"정보/팁",icon:"📌",topics:["초보자를 위한 블로그 시작 가이드","생산성을 높이는 5가지 습관","효과적인 시간 관리법","직장인 자기계발 루틴","디지털 디톡스 실천법"]}];
+const TOPICS=[{name:"일상 에세이",icon:"☕",topics:["오늘 먹은 점심에서 발견한 이야기","나만의 아침 루틴 소개하기","최근 나를 웃게 만든 순간","오늘 감사한 3가지","계절의 변화를 느낀 순간"]},{name:"전문 지식",icon:"💡",topics:["AI 마케팅 최신 트렌드 분석","블로그 SEO 최적화 핵심 팁","SNS 알고리즘 이해하기","퍼스널 브랜딩 전략","숏폼 콘텐츠 제작 노하우"]},{name:"리뷰/추천",icon:"⭐",topics:["이번 주 읽은 책 리뷰","내가 매일 쓰는 앱 추천","업무 효율을 높이는 도구","최근 다녀온 곳 후기","내 인생 맛집 베스트 3"]},{name:"성장/회고",icon:"🚀",topics:["올해 이루고 싶은 목표","지난 한 주 돌아보기","실패에서 배운 교훈","5년 후 나에게 쓰는 편지","내가 극복한 두려움 이야기"]},{name:"정보/팁",icon:"📌",topics:["초보자를 위한 블로그 시작 가이드","생산성을 높이는 5가지 습관","효과적인 시간 관리법","직장인 자기계발 루틴","디지털 디톡스 실천법"]}];
+const TREND_KEYWORDS=["AI 활용법","챗GPT 프롬프트","퍼스널브랜딩","블로그 수익화","클로드 사용법","디지털노마드","사이드프로젝트","자기계발 루틴","온라인 마케팅","콘텐츠 크리에이터"];
 
 const getToday=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
 const getLevel=t=>{let c=LEVELS[0];for(const l of LEVELS){if(t>=l.min)c=l;}return c;};
 const getNextLevel=t=>{for(const l of LEVELS){if(t<l.min)return l;}return null;};
 const getDIM=(y,m)=>new Date(y,m+1,0).getDate();
 const getFDM=(y,m)=>new Date(y,m,1).getDay();
-const INIT={entries:{},startDate:getToday(),totalDays:0,currentStreak:0,maxStreak:0,earlyBird:false,nightOwl:false,comeback:false};
+const INIT={entries:{},startDate:getToday(),totalDays:0,currentStreak:0,maxStreak:0,earlyBird:false,nightOwl:false,comeback:false,isPremium:false,groupId:null,groupName:null};
 
-/* ===== LOGIN SCREEN ===== */
+// === Data Layer (localStorage + Firebase) ===
+const DataService = {
+  async loadUser(userId) {
+    const local = localStorage.getItem("bc-"+userId);
+    let data = local ? JSON.parse(local) : null;
+    if (db) {
+      try {
+        const doc = await db.collection("users").doc(userId).get();
+        if (doc.exists) {
+          const fbData = doc.data();
+          if (!data || (fbData.totalDays||0) >= (data.totalDays||0)) data = fbData;
+        }
+      } catch(e) {}
+    }
+    return data || INIT;
+  },
+  async saveUser(userId, data, userInfo) {
+    localStorage.setItem("bc-"+userId, JSON.stringify(data));
+    if (db) {
+      try {
+        await db.collection("users").doc(userId).set({
+          ...data, name: userInfo.name, picture: userInfo.picture, email: userInfo.email, updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, {merge:true});
+      } catch(e) {}
+    }
+  },
+  async getLeaderboard(groupId) {
+    if (!db) return [];
+    try {
+      let q = db.collection("users").orderBy("totalDays","desc").limit(20);
+      if (groupId) q = db.collection("users").where("groupId","==",groupId).orderBy("totalDays","desc").limit(20);
+      const snap = await q.get();
+      return snap.docs.map(d=>({id:d.id,...d.data()}));
+    } catch(e) { return []; }
+  },
+  async joinGroup(userId, groupId, groupName) {
+    if (db) {
+      try {
+        await db.collection("users").doc(userId).update({groupId, groupName});
+        await db.collection("groups").doc(groupId).set({name:groupName, updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      } catch(e) {}
+    }
+  },
+  async getGroups() {
+    if (!db) return [];
+    try {
+      const snap = await db.collection("groups").orderBy("updatedAt","desc").limit(20).get();
+      return snap.docs.map(d=>({id:d.id,...d.data()}));
+    } catch(e) { return []; }
+  },
+  exportData(data) {
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "blog-challenge-backup-"+getToday()+".json"; a.click();
+    URL.revokeObjectURL(url);
+  },
+  importData(file) {
+    return new Promise((resolve,reject)=>{
+      const reader = new FileReader();
+      reader.onload = e => { try { resolve(JSON.parse(e.target.result)); } catch(err) { reject(err); } };
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
+  }
+};
+
+// === Share Card Generator ===
+function generateShareCard(data, userName) {
+  const canvas = document.getElementById("shareCanvas");
+  const ctx = canvas.getContext("2d");
+  const w=1080,h=1080;
+  ctx.fillStyle="#1a1612";ctx.fillRect(0,0,w,h);
+  // gradient accent
+  const grd=ctx.createLinearGradient(0,0,w,0);grd.addColorStop(0,"#D4756B");grd.addColorStop(1,"#E88FAD");
+  ctx.fillStyle=grd;ctx.fillRect(0,0,w,8);ctx.fillRect(0,h-8,w,8);
+  // title
+  ctx.fillStyle="#e8dcc8";ctx.font="bold 48px 'Noto Sans KR',sans-serif";ctx.textAlign="center";
+  ctx.fillText("매일 글쓰기 챌린지",w/2,120);
+  // user name
+  ctx.font="24px 'Noto Sans KR',sans-serif";ctx.fillStyle="#8b7e6a";
+  ctx.fillText(userName+"님의 기록",w/2,170);
+  // level emoji
+  const lv=getLevel(data.totalDays);
+  ctx.font="120px sans-serif";ctx.fillText(lv.emoji,w/2,340);
+  // level name
+  ctx.font="bold 44px 'Noto Sans KR',sans-serif";ctx.fillStyle=lv.color;
+  ctx.fillText(lv.name,w/2,410);
+  // stats
+  ctx.font="bold 80px 'Noto Serif KR',serif";ctx.fillStyle="#e8dcc8";
+  ctx.fillText(data.totalDays+"일",w/2,540);
+  ctx.font="20px 'Noto Sans KR',sans-serif";ctx.fillStyle="#8b7e6a";
+  ctx.fillText("총 작성일",w/2,575);
+  // streak
+  ctx.font="bold 36px 'Noto Sans KR',sans-serif";ctx.fillStyle="#D4756B";
+  ctx.fillText("🔥 "+data.currentStreak+"일 연속  ⚡ 최고 "+data.maxStreak+"일",w/2,660);
+  // badges
+  const earned=BADGES.filter(b=>b.check(data));
+  ctx.font="40px sans-serif";
+  earned.forEach((b,i)=>{ctx.fillText(b.emoji,340+i*56,740);});
+  // branding
+  ctx.fillStyle=grd;ctx.fillRect(140,820,800,2);
+  ctx.font="bold 22px 'Noto Sans KR',sans-serif";ctx.fillStyle="#8b7e6a";
+  ctx.fillText("AI콘텐츠마케팅연구소 유쌤클래스",w/2,880);
+  ctx.font="16px 'Noto Sans KR',sans-serif";ctx.fillStyle="#5a4f3f";
+  ctx.fillText("친절한유성쌤과 함께하는 블로그 글쓰기 챌린지",w/2,910);
+  ctx.fillText(getToday(),w/2,940);
+  // download
+  canvas.toBlob(blob=>{
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url;a.download="challenge-"+getToday()+".png";a.click();
+    URL.revokeObjectURL(url);
+  });
+}
+
+// === AI Service ===
+const AIService = {
+  async getSuggestion(topic) {
+    try {
+      const resp = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
+          messages:[{role:"user",content:"당신은 네이버 블로그 SEO 전문 코치입니다. \""+topic+"\" 주제로 다음을 제공하세요:\n\n1. 📝 추천 제목 3개 (SEO 최적화, 클릭 유도)\n2. 🏷️ 추천 키워드 5개 (검색량 높은 순)\n3. 📋 글 구성 아웃라인 (서론/본론/결론)\n4. 💡 차별화 포인트\n5. ⏰ 추천 발행 시간\n\n한국어, 간결하게."}]
+        })
+      });
+      const d=await resp.json();
+      return d.content?.map(i=>i.text||"").join("\n") || null;
+    } catch(e) { return null; }
+  },
+  async reviewPost(url) {
+    try {
+      const resp = await fetch("https://api.anthropic.com/v1/messages", {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,
+          messages:[{role:"user",content:"블로그 글 리뷰를 해주세요. URL: "+url+"\n\n다음 항목을 평가해주세요:\n1. 📊 SEO 점수 (1-10)\n2. 📝 제목 개선 제안\n3. 🏷️ 추가 키워드 제안\n4. 📖 가독성 평가\n5. 💡 개선 포인트 3가지\n\n한국어, 간결하게."}]
+        })
+      });
+      const d=await resp.json();
+      return d.content?.map(i=>i.text||"").join("\n") || null;
+    } catch(e) { return null; }
+  },
+  getLocalSuggestion(topic) {
+    return ["📝 추천 제목:","1. ["+topic+"] 완벽 가이드 - 초보자도 쉽게!","2. "+topic+", 이것만 알면 됩니다 (2026 최신)","3. 나만 알고 싶은 "+topic+" 꿀팁 모음","","🏷️ 추천 키워드:",topic+", "+topic+" 방법, "+topic+" 팁, "+topic+" 후기, "+topic+" 추천","","📋 글 구성 아웃라인:","① 도입 - 공감 유도","② 핵심 내용 3가지 (소제목)","③ 나의 경험/사례","④ 마무리 - 요약 + CTA","","💡 차별화 포인트:","직접 경험한 사례와 before/after!","","⏰ 추천 발행 시간:","오전 8-9시 또는 오후 7-8시"].join("\n");
+  }
+};
+
+// ===== LOGIN SCREEN =====
 function LoginScreen({onLogin}){
-  const btnRef=useRef(null);
-  const[ready,setReady]=useState(false);
-  useEffect(()=>{
-    let a=0;const tryInit=()=>{
-      if(window.google&&window.google.accounts){
-        window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:r=>{const p=decodeJwt(r.credential);if(p)onLogin({id:p.sub,name:p.name,email:p.email,picture:p.picture});}});
-        setReady(true);
-        if(btnRef.current)window.google.accounts.id.renderButton(btnRef.current,{type:"standard",theme:"filled_black",size:"large",text:"signin_with",shape:"pill",width:300,locale:"ko"});
-      }else if(a<50){a++;setTimeout(tryInit,200);}
-    };tryInit();
-  },[]);
+  const btnRef=useRef(null);const[ready,setReady]=useState(false);
+  useEffect(()=>{let a=0;const tryInit=()=>{if(window.google&&window.google.accounts){window.google.accounts.id.initialize({client_id:CONFIG.GOOGLE_CLIENT_ID,callback:r=>{const p=decodeJwt(r.credential);if(p)onLogin({id:p.sub,name:p.name,email:p.email,picture:p.picture});}});setReady(true);if(btnRef.current)window.google.accounts.id.renderButton(btnRef.current,{type:"standard",theme:"filled_black",size:"large",text:"signin_with",shape:"pill",width:300,locale:"ko"});}else if(a<50){a++;setTimeout(tryInit,200);}};tryInit();},[]);
   return(
     <div style={{minHeight:"100vh",background:"#1a1612",display:"flex",alignItems:"center",justifyContent:"center",padding:24}}>
-      <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%, rgba(139,110,70,.12) 0%, transparent 60%)",pointerEvents:"none"}}/>
+      <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.12) 0%,transparent 60%)",pointerEvents:"none"}}/>
       <div style={{textAlign:"center",maxWidth:380,width:"100%",position:"relative",zIndex:1}}>
         <div style={{fontSize:64,marginBottom:16,animation:"float 3s ease-in-out infinite"}}>✍️</div>
-        <h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:28,color:"#e8dcc8",fontWeight:700,marginBottom:8}}>매일 글쓰기 챌린지</h1>
+        <h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:28,color:"#e8dcc8",fontWeight:700,marginBottom:4}}>매일 글쓰기 챌린지</h1>
+        <div className="premium-badge" style={{margin:"8px auto 24px",width:"fit-content"}}>PRO</div>
         <p style={{fontSize:14,color:"#8b7e6a",lineHeight:1.6,marginBottom:32}}>블로그 글쓰기 습관을 만들어보세요</p>
-        <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:16,padding:"16px 20px",marginBottom:36,display:"flex",alignItems:"center",gap:12,border:"1px solid #3d342930",textAlign:"left"}}>
+        <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:16,padding:"16px 20px",marginBottom:32,display:"flex",alignItems:"center",gap:12,border:"1px solid #3d342930",textAlign:"left"}}>
           <img src={COACH_IMG} alt="" style={{width:44,height:44,borderRadius:"50%",border:"2px solid #3d3429",objectFit:"cover",flexShrink:0}}/>
           <div><p style={{fontSize:13,fontWeight:700,color:"#e8dcc8"}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p style={{fontSize:11,color:"#8b7e6a"}}>친절한유성쌤과 함께하는 글쓰기 여정</p></div>
         </div>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:36}}>
-          {[{e:"📅",l:"달력 체크"},{e:"🔥",l:"스트릭"},{e:"🤖",l:"AI 추천"}].map((f,i)=><div key={i} style={{background:"#252017",borderRadius:12,padding:"14px 8px",border:"1px solid #3d342920"}}><div style={{fontSize:24,marginBottom:4}}>{f.e}</div><p style={{fontSize:11,color:"#8b7e6a"}}>{f.l}</p></div>)}
+        <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:32}}>
+          {[{e:"📅",l:"달력"},{e:"🔥",l:"스트릭"},{e:"🤖",l:"AI코칭"},{e:"🏆",l:"랭킹"}].map((f,i)=><div key={i} style={{background:"#252017",borderRadius:12,padding:"12px 4px",border:"1px solid #3d342920"}}><div style={{fontSize:22,marginBottom:2}}>{f.e}</div><p style={{fontSize:10,color:"#8b7e6a"}}>{f.l}</p></div>)}
         </div>
         <div style={{display:"flex",justifyContent:"center",marginBottom:16}}><div ref={btnRef}></div></div>
         {!ready&&<p style={{fontSize:12,color:"#5a4f3f"}}>Google 로그인 로딩 중...</p>}
-        <p style={{fontSize:11,color:"#3d3429",marginTop:24}}>로그인하면 내 챌린지 데이터가 안전하게 보관됩니다</p>
+        <p style={{fontSize:10,color:"#3d3429",marginTop:20}}>로그인하면 클라우드에 데이터가 자동 동기화됩니다</p>
       </div>
     </div>
   );
 }
 
-/* ===== MAIN APP ===== */
+// ===== MAIN APP =====
 function ChallengeApp({user,onLogout}){
-  const SK="blog-challenge-"+user.id;
-  const[data,setData]=useState(()=>{try{const r=localStorage.getItem(SK);return r?JSON.parse(r):INIT;}catch(e){return INIT;}});
+  const[data,setData]=useState(INIT);
+  const[loading,setLoading]=useState(true);
   const[view,setView]=useState("home");
   const[calM,setCalM]=useState(new Date().getMonth());
   const[calY,setCalY]=useState(new Date().getFullYear());
   const[showChk,setShowChk]=useState(false);
-  const[note,setNote]=useState("");
-  const[url,setUrl]=useState("");
+  const[note,setNote]=useState("");const[url,setUrl]=useState("");
   const[topicOpen,setTopicOpen]=useState(null);
-  const[aiLoad,setAiLoad]=useState(false);
-  const[aiText,setAiText]=useState("");
+  const[aiLoad,setAiLoad]=useState(false);const[aiText,setAiText]=useState("");
   const[custTopic,setCustTopic]=useState("");
   const[celeb,setCeleb]=useState(null);
   const[selDay,setSelDay]=useState(null);
   const[showProf,setShowProf]=useState(false);
-  const save=nd=>{setData(nd);try{localStorage.setItem(SK,JSON.stringify(nd));}catch(e){}};
+  const[leaderboard,setLeaderboard]=useState([]);
+  const[lbLoading,setLbLoading]=useState(false);
+  const[showGroupModal,setShowGroupModal]=useState(false);
+  const[groupInput,setGroupInput]=useState("");
+  const[groups,setGroups]=useState([]);
+  const[reviewUrl,setReviewUrl]=useState("");
+  const[reviewLoad,setReviewLoad]=useState(false);
+  const[reviewText,setReviewText]=useState("");
+  const[showReview,setShowReview]=useState(false);
+  const[showExport,setShowExport]=useState(false);
+  const[showAdmin,setShowAdmin]=useState(false);
+  const fileRef=useRef(null);
+
+  // Load data
+  useEffect(()=>{
+    DataService.loadUser(user.id).then(d=>{setData(d);setLoading(false);});
+  },[user.id]);
+
+  const save=async(nd)=>{setData(nd);await DataService.saveUser(user.id,nd,user);};
   const calcStreak=entries=>{let s=0;const d=new Date();while(true){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(entries[k]){s++;d.setDate(d.getDate()-1);}else if(s===0){d.setDate(d.getDate()-1);const k2=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(entries[k2]){s++;d.setDate(d.getDate()-1);}else break;}else break;}return s;};
   const chkCB=entries=>{const d=Object.keys(entries).sort();for(let i=1;i<d.length;i++){if(Math.floor((new Date(d[i])-new Date(d[i-1]))/864e5)>=4)return true;}return false;};
-  const doCheckIn=()=>{const t=getToday();if(data.entries[t])return;const h=new Date().getHours();const ne=Object.assign({},data.entries,{[t]:{note,url,time:new Date().toISOString()}});const td=Object.keys(ne).length;const cs=calcStreak(ne);const ms=Math.max(data.maxStreak,cs);const nd=Object.assign({},data,{entries:ne,totalDays:td,currentStreak:cs,maxStreak:ms,earlyBird:data.earlyBird||h<6,nightOwl:data.nightOwl||(h>=0&&h<4),comeback:data.comeback||chkCB(ne)});save(nd);setShowChk(false);setNote("");setUrl("");const ol=getLevel(data.totalDays),nl=getLevel(td);if(nl.name!==ol.name)setCeleb({type:"level",level:nl});else{const nb=BADGES.filter(b=>b.check(nd)&&!b.check(data));if(nb.length)setCeleb({type:"badge",badge:nb[0]});else setCeleb({type:"checkin",streak:cs});}setTimeout(()=>setCeleb(null),3e3);};
-  const getAi=topic=>{setAiLoad(true);setAiText("");setTimeout(()=>{setAiText(["📝 추천 제목:","1. ["+topic+"] 완벽 가이드 - 초보자도 쉽게!","2. "+topic+", 이것만 알면 됩니다 (2026 최신)","3. 나만 알고 싶은 "+topic+" 꿀팁 모음","","🏷️ 추천 키워드:",topic+", "+topic+" 방법, "+topic+" 팁, "+topic+" 후기, "+topic+" 추천","","📋 글 구성 아웃라인:","① 도입 - 공감 유도","② 핵심 내용 3가지","③ 나의 경험/사례","④ 마무리 - 요약 + CTA","","💡 차별화 포인트:","직접 경험한 사례와 before/after를 넣으면 신뢰도 UP!"].join("\n"));setAiLoad(false);},1500);};
-  const doReset=()=>{if(confirm("정말 모든 데이터를 초기화하시겠습니까?"))save(INIT);};
+
+  const doCheckIn=()=>{
+    const t=getToday();if(data.entries[t])return;const h=new Date().getHours();
+    const ne=Object.assign({},data.entries,{[t]:{note,url,time:new Date().toISOString()}});
+    const td=Object.keys(ne).length;const cs=calcStreak(ne);const ms=Math.max(data.maxStreak,cs);
+    const nd=Object.assign({},data,{entries:ne,totalDays:td,currentStreak:cs,maxStreak:ms,earlyBird:data.earlyBird||h<6,nightOwl:data.nightOwl||(h>=0&&h<4),comeback:data.comeback||chkCB(ne)});
+    save(nd);setShowChk(false);setNote("");setUrl("");
+    const ol=getLevel(data.totalDays),nl=getLevel(td);
+    if(nl.name!==ol.name)setCeleb({type:"level",level:nl});
+    else{const nb=BADGES.filter(b=>b.check(nd)&&!b.check(data));if(nb.length)setCeleb({type:"badge",badge:nb[0]});else setCeleb({type:"checkin",streak:cs});}
+    setTimeout(()=>setCeleb(null),3000);
+  };
+
+  const getAi=async(topic)=>{
+    setAiLoad(true);setAiText("");
+    const result = await AIService.getSuggestion(topic);
+    setAiText(result || AIService.getLocalSuggestion(topic));
+    setAiLoad(false);
+  };
+
+  const doReview=async()=>{
+    if(!reviewUrl.trim())return;setReviewLoad(true);setReviewText("");setShowReview(true);
+    const result=await AIService.reviewPost(reviewUrl);
+    setReviewText(result||"리뷰 서비스에 연결할 수 없습니다. API 설정을 확인해주세요.");
+    setReviewLoad(false);
+  };
+
+  const loadLeaderboard=async()=>{setLbLoading(true);const lb=await DataService.getLeaderboard(data.groupId);setLeaderboard(lb);setLbLoading(false);};
+  const loadGroups=async()=>{const g=await DataService.getGroups();setGroups(g);};
+
+  const joinGroup=async(gid,gname)=>{
+    await DataService.joinGroup(user.id,gid,gname);
+    const nd=Object.assign({},data,{groupId:gid,groupName:gname});
+    save(nd);setShowGroupModal(false);
+  };
+  const createGroup=async()=>{
+    if(!groupInput.trim())return;
+    const gid="grp-"+Date.now();
+    await joinGroup(gid,groupInput.trim());setGroupInput("");
+  };
+
+  const handleImport=async(e)=>{
+    const file=e.target.files[0];if(!file)return;
+    try{const imported=await DataService.importData(file);save(imported);alert("데이터를 성공적으로 불러왔습니다!");}
+    catch(err){alert("파일 형식이 올바르지 않습니다.");}
+  };
+
   const doLogout=()=>{try{window.google.accounts.id.disableAutoSelect();}catch(e){}onLogout();};
+  const doReset=()=>{if(confirm("정말 모든 데이터를 초기화하시겠습니까?"))save(INIT);};
+
+  if(loading)return<div style={{minHeight:"100vh",display:"flex",alignItems:"center",justifyContent:"center",background:"#1a1612"}}><div style={{textAlign:"center"}}><div style={{fontSize:48,animation:"pulse 1.5s infinite"}}>✍️</div><p style={{fontFamily:"'Noto Serif KR',serif",color:"#e8dcc8",marginTop:12}}>데이터 동기화 중...</p></div></div>;
+
   const today=getToday(),done=data.entries[today],lv=getLevel(data.totalDays),nlv=getNextLevel(data.totalDays);
   const prog=nlv?((data.totalDays-lv.min)/(nlv.min-lv.min))*100:100;
   const badges=BADGES.filter(b=>b.check(data));
   const dim=getDIM(calY,calM),fd=getFDM(calY,calM);
   const mn=["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"];
+
   return(
     <div style={{minHeight:"100vh",background:"#1a1612",color:"#e8dcc8",fontFamily:"'Noto Sans KR',sans-serif",maxWidth:480,margin:"0 auto",position:"relative",overflow:"hidden"}}>
       <div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"radial-gradient(ellipse at 30% 20%,rgba(139,110,70,.08) 0%,transparent 60%)",pointerEvents:"none",zIndex:0}}/>
+      <input ref={fileRef} type="file" accept=".json" style={{display:"none"}} onChange={handleImport}/>
+
+      {/* === CELEBRATIONS === */}
       {celeb&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.7)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:1000,animation:"fadeIn .3s"}}><div style={{textAlign:"center",animation:"slideUp .5s",padding:32}}>{celeb.type==="level"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>{celeb.level.emoji}</div><p style={{fontSize:14,color:"#8b7e6a",letterSpacing:4,marginBottom:8}}>레벨 업!</p><p style={{fontSize:28,fontWeight:900,color:celeb.level.color}}>{celeb.level.name}</p></React.Fragment>}{celeb.type==="badge"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>{celeb.badge.emoji}</div><p style={{fontSize:14,color:"#8b7e6a",letterSpacing:4,marginBottom:8}}>뱃지 획득!</p><p style={{fontSize:24,fontWeight:700}}>{celeb.badge.name}</p></React.Fragment>}{celeb.type==="checkin"&&<React.Fragment><div style={{fontSize:72,marginBottom:16}}>🔥</div><p style={{fontSize:28,fontWeight:900}}>{celeb.streak}일 연속!</p><p style={{fontSize:14,color:"#8b7e6a",marginTop:8}}>오늘도 멋지게 해냈어요</p></React.Fragment>}</div></div>}
-      {showProf&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.6)",zIndex:800}} onClick={()=>setShowProf(false)}><div style={{position:"absolute",top:60,right:20,maxWidth:280,background:"#252017",borderRadius:16,padding:20,border:"1px solid #3d3429",animation:"fadeIn .2s"}} onClick={e=>e.stopPropagation()}><div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,paddingBottom:16,borderBottom:"1px solid #3d342940"}}><img src={user.picture} alt="" style={{width:40,height:40,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/><div style={{overflow:"hidden"}}><p style={{fontSize:14,fontWeight:700,whiteSpace:"nowrap",textOverflow:"ellipsis",overflow:"hidden"}}>{user.name}</p><p style={{fontSize:11,color:"#8b7e6a",whiteSpace:"nowrap",textOverflow:"ellipsis",overflow:"hidden"}}>{user.email}</p></div></div><button onClick={doReset} style={{width:"100%",padding:"10px 0",background:"none",border:"none",color:"#8b7e6a",fontSize:13,cursor:"pointer",textAlign:"left",marginBottom:8}}>⚙️ 데이터 초기화</button><button onClick={doLogout} style={{width:"100%",padding:"12px 0",background:"#D4756B20",border:"1px solid #D4756B40",borderRadius:10,color:"#D4756B",fontSize:13,fontWeight:600,cursor:"pointer"}}>로그아웃</button></div></div>}
-      {showChk&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.8)",display:"flex",alignItems:"flex-end",justifyContent:"center",zIndex:900}} onClick={()=>setShowChk(false)}><div style={{background:"#252017",width:"100%",maxWidth:480,borderRadius:"24px 24px 0 0",padding:"32px 24px",animation:"slideUp .3s"}} onClick={e=>e.stopPropagation()}><div style={{width:40,height:4,background:"#3d3429",borderRadius:2,margin:"0 auto 24px"}}/><h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,marginBottom:20}}>✍️ 오늘의 글쓰기 체크</h3><div style={{marginBottom:16}}><label style={{fontSize:12,color:"#8b7e6a",display:"block",marginBottom:6}}>블로그 글 URL (선택)</label><input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://blog.naver.com/..." style={{width:"100%",padding:"12px 16px",background:"#1a1612",border:"1px solid #3d3429",borderRadius:12,color:"#e8dcc8",fontSize:14,outline:"none"}}/></div><div style={{marginBottom:24}}><label style={{fontSize:12,color:"#8b7e6a",display:"block",marginBottom:6}}>오늘의 한 줄 메모 (선택)</label><textarea value={note} onChange={e=>setNote(e.target.value)} placeholder="오늘 글쓰기는 어땠나요?" rows={3} style={{width:"100%",padding:"12px 16px",background:"#1a1612",border:"1px solid #3d3429",borderRadius:12,color:"#e8dcc8",fontSize:14,outline:"none",resize:"none"}}/></div><button onClick={doCheckIn} style={{width:"100%",padding:"16px",background:"linear-gradient(135deg,#D4756B,#E88FAD)",border:"none",borderRadius:16,color:"#fff",fontSize:16,fontWeight:700,cursor:"pointer"}}>오늘의 글쓰기 완료! 🎉</button></div></div>}
-      {selDay&&data.entries[selDay]&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:900,padding:24}} onClick={()=>setSelDay(null)}><div style={{background:"#252017",borderRadius:20,padding:24,maxWidth:380,width:"100%",animation:"slideUp .3s"}} onClick={e=>e.stopPropagation()}><p style={{fontSize:13,color:"#8b7e6a",marginBottom:8}}>{selDay}</p><p style={{fontSize:15,lineHeight:1.7,marginBottom:12}}>{data.entries[selDay].note||"메모 없음"}</p>{data.entries[selDay].url&&<a href={data.entries[selDay].url} target="_blank" rel="noreferrer" style={{color:"#E88FAD",fontSize:13,wordBreak:"break-all"}}>{data.entries[selDay].url}</a>}<button onClick={()=>setSelDay(null)} style={{marginTop:16,width:"100%",padding:12,background:"#3d3429",border:"none",borderRadius:12,color:"#e8dcc8",cursor:"pointer"}}>닫기</button></div></div>}
-      {(aiLoad||aiText)&&<div style={{position:"fixed",top:0,left:0,right:0,bottom:0,background:"rgba(0,0,0,.8)",display:"flex",alignItems:"center",justifyContent:"center",zIndex:900,padding:24}} onClick={()=>{setAiText("");setAiLoad(false);}}><div style={{background:"#252017",borderRadius:20,padding:24,maxWidth:420,width:"100%",maxHeight:"80vh",overflowY:"auto",animation:"slideUp .3s"}} onClick={e=>e.stopPropagation()}><h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:16}}>🤖 AI 글쓰기 코치</h3>{aiLoad?<div style={{textAlign:"center",padding:32}}><div style={{fontSize:32,animation:"pulse 1s infinite"}}>🧠</div><p style={{color:"#8b7e6a",marginTop:12,fontSize:14}}>주제를 분석하고 있어요...</p></div>:<div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"#d4c8b0"}}>{aiText}</div>}<button onClick={()=>{setAiText("");setAiLoad(false);}} style={{marginTop:20,width:"100%",padding:12,background:"#3d3429",border:"none",borderRadius:12,color:"#e8dcc8",cursor:"pointer",fontSize:14}}>닫기</button></div></div>}
 
-      <div style={{paddingBottom:80,position:"relative",zIndex:1}}>
-        {view==="home"&&<div style={{padding:"20px 20px 0"}}>
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
-            <div style={{display:"flex",alignItems:"center",gap:12}}><img src={COACH_IMG} alt="" style={{width:44,height:44,borderRadius:"50%",border:"2px solid #3d3429",objectFit:"cover"}}/><div><p style={{fontSize:11,color:"#8b7e6a",letterSpacing:2,marginBottom:2}}>Blog Writing Challenge</p><h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,fontWeight:700,letterSpacing:-.5}}>매일 글쓰기</h1></div></div>
-            <button onClick={()=>setShowProf(!showProf)} style={{background:"none",border:"2px solid #3d3429",borderRadius:"50%",width:36,height:36,cursor:"pointer",overflow:"hidden",padding:0}}><img src={user.picture} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} referrerPolicy="no-referrer"/></button>
+      {/* === MODALS === */}
+      {showProf&&<div className="modal-overlay" onClick={()=>setShowProf(false)}><div className="modal-content" style={{maxWidth:300}} onClick={e=>e.stopPropagation()}>
+        <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:16,paddingBottom:16,borderBottom:"1px solid #3d342940"}}><img src={user.picture} alt="" style={{width:40,height:40,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/><div style={{overflow:"hidden"}}><p style={{fontSize:14,fontWeight:700}}>{user.name}</p><p className="text-muted">{user.email}</p></div></div>
+        {data.groupId&&<div style={{marginBottom:12,padding:"8px 12px",background:"#1a1612",borderRadius:10}}><p className="text-muted">그룹: {data.groupName}</p></div>}
+        <button onClick={()=>{DataService.exportData(data);setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>📥 데이터 백업 (JSON)</button>
+        <button onClick={()=>{fileRef.current.click();setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>📤 데이터 복원 (JSON)</button>
+        <button onClick={()=>{generateShareCard(data,user.name);setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>🖼️ SNS 공유 카드 다운로드</button>
+        <button onClick={()=>{setShowAdmin(true);setShowProf(false);}} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left"}}>📊 관리자 대시보드</button>
+        <div className="divider"/>
+        <button onClick={doReset} className="btn-secondary" style={{width:"100%",marginBottom:8,textAlign:"left",color:"#8b7e6a"}}>⚙️ 데이터 초기화</button>
+        <button onClick={doLogout} style={{width:"100%",padding:"12px 0",background:"#D4756B20",border:"1px solid #D4756B40",borderRadius:10,color:"#D4756B",fontSize:13,fontWeight:600,cursor:"pointer"}}>로그아웃</button>
+      </div></div>}
+
+      {showChk&&<div className="modal-bottom" onClick={()=>setShowChk(false)}><div className="modal-sheet" onClick={e=>e.stopPropagation()}>
+        <div style={{width:40,height:4,background:"#3d3429",borderRadius:2,margin:"0 auto 24px"}}/>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,marginBottom:20}}>✍️ 오늘의 글쓰기 체크</h3>
+        <div style={{marginBottom:16}}><label className="text-muted" style={{display:"block",marginBottom:6}}>블로그 글 URL (선택)</label><input value={url} onChange={e=>setUrl(e.target.value)} placeholder="https://blog.naver.com/..." className="input-field"/></div>
+        <div style={{marginBottom:24}}><label className="text-muted" style={{display:"block",marginBottom:6}}>오늘의 한 줄 메모 (선택)</label><textarea value={note} onChange={e=>setNote(e.target.value)} placeholder="오늘 글쓰기는 어땠나요?" rows={3} className="input-field" style={{resize:"none"}}/></div>
+        <button onClick={doCheckIn} className="btn-primary">오늘의 글쓰기 완료! 🎉</button>
+      </div></div>}
+
+      {selDay&&data.entries[selDay]&&<div className="modal-overlay" onClick={()=>setSelDay(null)}><div className="modal-content" style={{maxWidth:380}} onClick={e=>e.stopPropagation()}>
+        <p className="text-muted" style={{marginBottom:8}}>{selDay}</p>
+        <p style={{fontSize:15,lineHeight:1.7,marginBottom:12}}>{data.entries[selDay].note||"메모 없음"}</p>
+        {data.entries[selDay].url&&<a href={data.entries[selDay].url} target="_blank" rel="noreferrer" style={{color:"#E88FAD",fontSize:13,wordBreak:"break-all"}}>{data.entries[selDay].url}</a>}
+        <button onClick={()=>setSelDay(null)} className="btn-secondary" style={{width:"100%",marginTop:16}}>닫기</button>
+      </div></div>}
+
+      {(aiLoad||aiText)&&<div className="modal-overlay" onClick={()=>{setAiText("");setAiLoad(false);}}><div className="modal-content" onClick={e=>e.stopPropagation()}>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:16}}>🤖 AI 글쓰기 코치</h3>
+        {aiLoad?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p style={{color:"#8b7e6a",marginTop:12,fontSize:14}}>AI가 분석 중...</p></div>
+        :<div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"#d4c8b0"}}>{aiText}</div>}
+        <button onClick={()=>{setAiText("");setAiLoad(false);}} className="btn-secondary" style={{width:"100%",marginTop:20}}>닫기</button>
+      </div></div>}
+
+      {showReview&&<div className="modal-overlay" onClick={()=>{setShowReview(false);setReviewText("");}}><div className="modal-content" onClick={e=>e.stopPropagation()}>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:4}}>📝 AI 글 리뷰</h3>
+        <span className="premium-badge" style={{marginBottom:16,display:"inline-flex"}}>PRO</span>
+        {reviewLoad?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p style={{color:"#8b7e6a",marginTop:12,fontSize:14}}>글을 분석하고 있어요...</p></div>
+        :<div style={{fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap",color:"#d4c8b0"}}>{reviewText}</div>}
+        <button onClick={()=>{setShowReview(false);setReviewText("");}} className="btn-secondary" style={{width:"100%",marginTop:20}}>닫기</button>
+      </div></div>}
+
+      {showGroupModal&&<div className="modal-overlay" onClick={()=>setShowGroupModal(false)}><div className="modal-content" onClick={e=>e.stopPropagation()}>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:16}}>👥 그룹 챌린지</h3>
+        <div style={{display:"flex",gap:8,marginBottom:20}}>
+          <input value={groupInput} onChange={e=>setGroupInput(e.target.value)} placeholder="새 그룹 이름..." className="input-field" style={{flex:1}}/>
+          <button onClick={createGroup} className="btn-secondary" style={{whiteSpace:"nowrap"}}>만들기</button>
+        </div>
+        {groups.length>0&&<React.Fragment><p className="text-muted" style={{marginBottom:8}}>참여 가능한 그룹:</p>
+        {groups.map(g=><div key={g.id} onClick={()=>joinGroup(g.id,g.name)} style={{padding:"12px 16px",background:"#1a1612",borderRadius:12,marginBottom:8,cursor:"pointer",display:"flex",justifyContent:"space-between",alignItems:"center"}}><span style={{fontSize:14}}>{g.name}</span><span style={{fontSize:11,color:"#E88FAD"}}>참여 →</span></div>)}</React.Fragment>}
+        {!db&&<p style={{fontSize:13,color:"#5a4f3f",textAlign:"center",padding:16}}>Firebase 설정 후 그룹 기능을 사용할 수 있습니다</p>}
+        <button onClick={()=>setShowGroupModal(false)} className="btn-secondary" style={{width:"100%",marginTop:12}}>닫기</button>
+      </div></div>}
+
+      {showAdmin&&<div className="modal-overlay" onClick={()=>setShowAdmin(false)}><div className="modal-content" style={{maxHeight:"90vh"}} onClick={e=>e.stopPropagation()}>
+        <h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:18,marginBottom:4}}>📊 관리자 대시보드</h3>
+        <span className="premium-badge" style={{marginBottom:16,display:"inline-flex"}}>ADMIN</span>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+          <div className="card-sm"><p className="text-muted">총 참여자</p><p style={{fontSize:24,fontWeight:900,color:"#E88FAD"}}>{leaderboard.length||1}</p></div>
+          <div className="card-sm"><p className="text-muted">오늘 작성자</p><p style={{fontSize:24,fontWeight:900,color:"#6B8E4E"}}>{leaderboard.filter(u=>u.entries&&u.entries[today]).length||(done?1:0)}</p></div>
+        </div>
+        {data.groupId&&<div className="card-sm" style={{marginBottom:16}}><p className="text-muted" style={{marginBottom:8}}>그룹: {data.groupName}</p>
+          {leaderboard.filter(u=>u.groupId===data.groupId).slice(0,5).map((u,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"6px 0",borderBottom:"1px solid #3d342920"}}><span style={{fontSize:12,color:"#8b7e6a",width:20}}>{i+1}</span><span style={{fontSize:13,flex:1}}>{u.name||"익명"}</span><span style={{fontSize:13,fontWeight:700,color:"#E88FAD"}}>{u.totalDays||0}일</span></div>)}
+        </div>}
+        <p style={{fontSize:12,color:"#5a4f3f",textAlign:"center"}}>Firebase 연동 시 전체 사용자 통계가 표시됩니다</p>
+        <button onClick={()=>setShowAdmin(false)} className="btn-secondary" style={{width:"100%",marginTop:16}}>닫기</button>
+      </div></div>}
+
+      {/* === CONTENT === */}
+      <div style={{paddingBottom:90,position:"relative",zIndex:1}}>
+
+      {/* HOME */}
+      {view==="home"&&<div style={{padding:"20px 20px 0"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
+          <div style={{display:"flex",alignItems:"center",gap:12}}><img src={COACH_IMG} alt="" style={{width:40,height:40,borderRadius:"50%",border:"2px solid #3d3429",objectFit:"cover"}}/><div><p className="text-muted" style={{letterSpacing:2,marginBottom:1,fontSize:10}}>Blog Writing Challenge PRO</p><h1 style={{fontFamily:"'Noto Serif KR',serif",fontSize:20,fontWeight:700}}>매일 글쓰기</h1></div></div>
+          <button onClick={()=>setShowProf(!showProf)} style={{background:"none",border:"2px solid #3d3429",borderRadius:"50%",width:34,height:34,cursor:"pointer",overflow:"hidden",padding:0}}><img src={user.picture} alt="" style={{width:"100%",height:"100%",objectFit:"cover"}} referrerPolicy="no-referrer"/></button>
+        </div>
+        <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:14,padding:"10px 14px",marginBottom:16,display:"flex",alignItems:"center",gap:10,border:"1px solid #3d342930"}}>
+          <div style={{width:5,height:28,borderRadius:3,background:"linear-gradient(to bottom,#D4756B,#E88FAD)",flexShrink:0}}/>
+          <div style={{flex:1}}><p style={{fontSize:12,fontWeight:700,color:"#e8dcc8"}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p className="text-muted">{user.name}님의 글쓰기 챌린지</p></div>
+          {data.groupId&&<span style={{fontSize:10,color:"#E88FAD",background:"#E88FAD15",padding:"3px 8px",borderRadius:10}}>{data.groupName}</span>}
+        </div>
+
+        {/* Level Card */}
+        <div className="card" style={{padding:20}}>
+          <div style={{display:"flex",alignItems:"center",gap:14,marginBottom:14}}>
+            <div style={{fontSize:44}}>{lv.emoji}</div>
+            <div style={{flex:1}}><p className="text-muted" style={{marginBottom:1}}>현재 등급</p><p style={{fontSize:20,fontWeight:900,color:lv.color}}>{lv.name}</p></div>
+            <div style={{textAlign:"right"}}><p style={{fontSize:28,fontWeight:900,fontFamily:"'Noto Serif KR',serif"}}>{data.totalDays}</p><p className="text-muted">총 작성일</p></div>
           </div>
-          <div style={{background:"linear-gradient(135deg,#252017,#2a2318)",borderRadius:14,padding:"12px 16px",marginBottom:20,display:"flex",alignItems:"center",gap:10,border:"1px solid #3d342930"}}><div style={{width:6,height:32,borderRadius:3,background:"linear-gradient(to bottom,#D4756B,#E88FAD)",flexShrink:0}}/><div><p style={{fontSize:13,fontWeight:700,color:"#e8dcc8",lineHeight:1.4}}>AI콘텐츠마케팅연구소 유쌤클래스</p><p style={{fontSize:11,color:"#8b7e6a"}}>{user.name}님의 글쓰기 챌린지</p></div></div>
-          <div style={{background:"linear-gradient(145deg,#252017,#2a2318)",borderRadius:20,padding:24,marginBottom:20,border:"1px solid #3d342930"}}><div style={{display:"flex",alignItems:"center",gap:16,marginBottom:16}}><div style={{fontSize:48,filter:"drop-shadow(0 4px 12px rgba(0,0,0,.3))"}}>{lv.emoji}</div><div style={{flex:1}}><p style={{fontSize:12,color:"#8b7e6a",marginBottom:2}}>현재 등급</p><p style={{fontSize:22,fontWeight:900,color:lv.color}}>{lv.name}</p></div><div style={{textAlign:"right"}}><p style={{fontSize:32,fontWeight:900,fontFamily:"'Noto Serif KR',serif"}}>{data.totalDays}</p><p style={{fontSize:11,color:"#8b7e6a"}}>총 작성일</p></div></div>{nlv&&<div><div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#8b7e6a",marginBottom:6}}><span>다음: {nlv.emoji} {nlv.name}</span><span>{nlv.min-data.totalDays}일 남음</span></div><div style={{height:6,background:"#1a1612",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3,transition:"width .5s ease"}}/></div></div>}</div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:12,marginBottom:20}}>{[{l:"연속",v:data.currentStreak+"일",i:"🔥"},{l:"최고 연속",v:data.maxStreak+"일",i:"⚡"},{l:"뱃지",v:badges.length+"개",i:"🏅"}].map((s,i)=><div key={i} style={{background:"#252017",borderRadius:16,padding:"16px 12px",textAlign:"center",border:"1px solid #3d342920"}}><div style={{fontSize:24,marginBottom:6}}>{s.i}</div><p style={{fontSize:18,fontWeight:700}}>{s.v}</p><p style={{fontSize:11,color:"#8b7e6a"}}>{s.l}</p></div>)}</div>
-          <button onClick={()=>!done&&setShowChk(true)} disabled={!!done} style={{width:"100%",padding:"18px",borderRadius:16,border:"none",fontSize:16,fontWeight:700,cursor:done?"default":"pointer",background:done?"linear-gradient(135deg,#2d3b2a,#2a3328)":"linear-gradient(135deg,#D4756B,#E88FAD)",color:done?"#6B8E4E":"#fff",animation:!done?"glow 2s infinite":"none",transition:"all .3s"}}>{done?"✅ 오늘 글쓰기 완료!":"✍️ 오늘의 글쓰기 체크하기"}</button>
-          <div style={{marginTop:24,background:"#252017",borderRadius:20,padding:20,border:"1px solid #3d342920"}}><div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}><button onClick={()=>{if(calM===0){setCalM(11);setCalY(calY-1);}else setCalM(calM-1);}} style={{background:"none",border:"none",color:"#8b7e6a",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>‹</button><p style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,fontWeight:700}}>{calY}년 {mn[calM]}</p><button onClick={()=>{if(calM===11){setCalM(0);setCalY(calY+1);}else setCalM(calM+1);}} style={{background:"none",border:"none",color:"#8b7e6a",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>›</button></div><div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:4,textAlign:"center"}}>{["일","월","화","수","목","금","토"].map(d=><div key={d} style={{fontSize:11,color:"#5a4f3f",padding:"4px 0"}}>{d}</div>)}{Array.from({length:fd},(_,i)=><div key={"e"+i}/>)}{Array.from({length:dim},(_,i)=>{const day=i+1,k=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(day).padStart(2,"0"),c=!!data.entries[k],it=k===today;return<div key={day} onClick={()=>c&&setSelDay(k)} style={{width:36,height:36,borderRadius:10,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,cursor:c?"pointer":"default",background:c?"linear-gradient(135deg,#D4756B,#E88FAD)":it?"#3d3429":"transparent",color:c?"#fff":it?"#e8dcc8":"#6b5f4f",fontWeight:it||c?700:400,margin:"0 auto"}}>{day}</div>;})}</div></div>
-          <div style={{marginTop:24}}><h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:16,marginBottom:14}}>🏅 획득한 뱃지</h3><div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:10}}>{BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:12,background:e?"#252017":"#1e1a14",borderRadius:14,border:"1px solid "+(e?"#3d3429":"#2a231820"),opacity:e?1:.4}}><div style={{fontSize:28,marginBottom:4,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:10,color:e?"#e8dcc8":"#5a4f3f",lineHeight:1.3}}>{b.name}</p></div>;})}</div></div>
-        </div>}
+          {nlv&&<div><div style={{display:"flex",justifyContent:"space-between",fontSize:11,color:"#8b7e6a",marginBottom:5}}><span>다음: {nlv.emoji} {nlv.name}</span><span>{nlv.min-data.totalDays}일 남음</span></div><div style={{height:5,background:"#1a1612",borderRadius:3,overflow:"hidden"}}><div style={{height:"100%",width:prog+"%",background:"linear-gradient(90deg,"+lv.color+","+nlv.color+")",borderRadius:3,transition:"width .5s ease"}}/></div></div>}
+        </div>
 
-        {view==="topics"&&<div style={{padding:"20px 20px 0"}}>
-          <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,marginBottom:6}}>💡 오늘 뭐 쓰지?</h2><p style={{fontSize:13,color:"#8b7e6a",marginBottom:24}}>주제를 선택하면 AI가 글쓰기를 도와드려요</p>
-          <div style={{display:"flex",gap:8,marginBottom:24}}><input value={custTopic} onChange={e=>setCustTopic(e.target.value)} placeholder="직접 주제 입력..." style={{flex:1,padding:"12px 16px",background:"#252017",border:"1px solid #3d3429",borderRadius:12,color:"#e8dcc8",fontSize:14,outline:"none"}}/><button onClick={()=>{if(custTopic.trim()){getAi(custTopic.trim());setCustTopic("");}}} style={{padding:"12px 20px",background:"linear-gradient(135deg,#D4756B,#E88FAD)",border:"none",borderRadius:12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>AI 추천</button></div>
-          {TOPICS.map((c,ci)=><div key={ci} style={{marginBottom:20}}><div onClick={()=>setTopicOpen(topicOpen===ci?null:ci)} style={{display:"flex",alignItems:"center",gap:10,padding:"14px 16px",background:"#252017",borderRadius:topicOpen===ci?"16px 16px 0 0":"16px",cursor:"pointer",border:"1px solid #3d342920"}}><span style={{fontSize:24}}>{c.icon}</span><span style={{flex:1,fontWeight:600,fontSize:15}}>{c.name}</span><span style={{color:"#8b7e6a",fontSize:12}}>{c.topics.length}개</span><span style={{color:"#5a4f3f",transform:topicOpen===ci?"rotate(180deg)":"rotate(0deg)",transition:".2s",display:"inline-block"}}>▼</span></div>{topicOpen===ci&&<div style={{background:"#1e1a14",borderRadius:"0 0 16px 16px",padding:"8px 0",border:"1px solid #3d342920",borderTop:"none"}}>{c.topics.map((t,ti)=><div key={ti} onClick={()=>getAi(t)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 16px",cursor:"pointer",borderBottom:ti<c.topics.length-1?"1px solid #252017":"none"}}><span style={{fontSize:14,color:"#d4c8b0"}}>{t}</span><span style={{fontSize:11,color:"#E88FAD",whiteSpace:"nowrap",marginLeft:8}}>AI →</span></div>)}</div>}</div>)}
-        </div>}
+        {/* Stats Row */}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:10,marginBottom:16}}>
+          {[{l:"연속",v:data.currentStreak+"일",i:"🔥"},{l:"최고",v:data.maxStreak+"일",i:"⚡"},{l:"뱃지",v:badges.length+"개",i:"🏅"}].map((s,i)=><div key={i} className="card-sm" style={{textAlign:"center",padding:"14px 8px"}}><div style={{fontSize:22,marginBottom:4}}>{s.i}</div><p style={{fontSize:16,fontWeight:700}}>{s.v}</p><p className="text-xs">{s.l}</p></div>)}
+        </div>
 
-        {view==="stats"&&<div style={{padding:"20px 20px 0"}}>
-          <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,marginBottom:24}}>📊 나의 글쓰기 통계</h2>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:24}}>{[{l:"총 작성일",v:data.totalDays,u:"일",c:"#E88FAD"},{l:"현재 연속",v:data.currentStreak,u:"일",c:"#D4756B"},{l:"최고 연속",v:data.maxStreak,u:"일",c:"#6B8E4E"},{l:"획득 뱃지",v:badges.length,u:"/"+BADGES.length,c:"#8B9E6B"}].map((s,i)=><div key={i} style={{background:"#252017",borderRadius:16,padding:20,border:"1px solid #3d342920"}}><p style={{fontSize:11,color:"#8b7e6a",marginBottom:8}}>{s.l}</p><p style={{fontSize:36,fontWeight:900,fontFamily:"'Noto Serif KR',serif",color:s.c}}>{s.v}<span style={{fontSize:14,fontWeight:400,color:"#8b7e6a"}}>{s.u}</span></p></div>)}</div>
-          <div style={{background:"#252017",borderRadius:20,padding:20,marginBottom:20,border:"1px solid #3d342920"}}><h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:15,marginBottom:16}}>월별 작성 현황</h3>{(()=>{const ms=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);const y=d.getFullYear(),m=d.getMonth(),dm=getDIM(y,m);let cnt=0;for(let day=1;day<=dm;day++){if(data.entries[y+"-"+String(m+1).padStart(2,"0")+"-"+String(day).padStart(2,"0")])cnt++;}ms.push({l:(m+1)+"월",c:cnt,t:dm});}const mx=Math.max(...ms.map(m=>m.c),1);return ms.map((m,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:12,marginBottom:8}}><span style={{fontSize:12,color:"#8b7e6a",width:30,textAlign:"right"}}>{m.l}</span><div style={{flex:1,height:20,background:"#1a1612",borderRadius:6,overflow:"hidden"}}><div style={{height:"100%",width:(m.c/mx*100)+"%",background:"linear-gradient(90deg,#D4756B,#E88FAD)",borderRadius:6,transition:"width .5s",minWidth:m.c>0?4:0}}/></div><span style={{fontSize:12,color:"#8b7e6a",width:50,textAlign:"right"}}>{m.c}/{m.t}</span></div>);})()}</div>
-          <div style={{background:"#252017",borderRadius:20,padding:20,marginBottom:20,border:"1px solid #3d342920"}}><h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:15,marginBottom:16}}>요일별 패턴</h3><div style={{display:"flex",gap:8,justifyContent:"space-between"}}>{["일","월","화","수","목","금","토"].map((d,di)=>{let cnt=0;Object.keys(data.entries).forEach(k=>{if(new Date(k).getDay()===di)cnt++;});const mx=Math.max(...[0,1,2,3,4,5,6].map(idx=>{let c=0;Object.keys(data.entries).forEach(k=>{if(new Date(k).getDay()===idx)c++;});return c;}),1);return<div key={di} style={{flex:1,textAlign:"center"}}><div style={{height:80,display:"flex",alignItems:"flex-end",justifyContent:"center",marginBottom:6}}><div style={{width:"70%",height:(cnt/mx*100)+"%",background:"linear-gradient(to top,#D4756B,#E88FAD)",borderRadius:4,minHeight:cnt>0?4:0}}/></div><p style={{fontSize:11,color:"#8b7e6a"}}>{d}</p><p style={{fontSize:12,fontWeight:700,marginTop:2}}>{cnt}</p></div>;})}</div></div>
-          <div style={{background:"#252017",borderRadius:20,padding:20,border:"1px solid #3d342920"}}><h3 style={{fontFamily:"'Noto Serif KR',serif",fontSize:15,marginBottom:16}}>성장 레벨</h3>{LEVELS.map((l,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<LEVELS.length-1?"1px solid #3d342920":"none",opacity:data.totalDays>=l.min?1:.4}}><span style={{fontSize:28}}>{l.emoji}</span><div style={{flex:1}}><p style={{fontSize:14,fontWeight:600,color:data.totalDays>=l.min?l.color:"#5a4f3f"}}>{l.name}</p><p style={{fontSize:11,color:"#5a4f3f"}}>{l.min}일 이상</p></div>{data.totalDays>=l.min&&<span style={{color:"#6B8E4E",fontSize:16}}>✓</span>}</div>)}</div>
-        </div>}
+        {/* Check-in */}
+        <button onClick={()=>!done&&setShowChk(true)} disabled={!!done} style={{width:"100%",padding:"16px",borderRadius:16,border:"none",fontSize:16,fontWeight:700,cursor:done?"default":"pointer",background:done?"linear-gradient(135deg,#2d3b2a,#2a3328)":"linear-gradient(135deg,#D4756B,#E88FAD)",color:done?"#6B8E4E":"#fff",animation:!done?"glow 2s infinite":"none",transition:"all .3s",marginBottom:12}}>{done?"✅ 오늘 글쓰기 완료!":"✍️ 오늘의 글쓰기 체크하기"}</button>
+
+        {/* Quick Actions */}
+        <div style={{display:"flex",gap:8,marginBottom:16}}>
+          <button onClick={()=>generateShareCard(data,user.name)} className="btn-secondary" style={{flex:1,fontSize:12}}>🖼️ 공유카드</button>
+          <button onClick={()=>{setShowGroupModal(true);loadGroups();}} className="btn-secondary" style={{flex:1,fontSize:12}}>👥 그룹</button>
+          <button onClick={()=>{DataService.exportData(data);}} className="btn-secondary" style={{flex:1,fontSize:12}}>📥 백업</button>
+        </div>
+
+        {/* Calendar */}
+        <div className="card">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:14}}>
+            <button onClick={()=>{if(calM===0){setCalM(11);setCalY(calY-1);}else setCalM(calM-1);}} style={{background:"none",border:"none",color:"#8b7e6a",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>‹</button>
+            <p style={{fontFamily:"'Noto Serif KR',serif",fontSize:15,fontWeight:700}}>{calY}년 {mn[calM]}</p>
+            <button onClick={()=>{if(calM===11){setCalM(0);setCalY(calY+1);}else setCalM(calM+1);}} style={{background:"none",border:"none",color:"#8b7e6a",fontSize:18,cursor:"pointer",padding:"4px 8px"}}>›</button>
+          </div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:3,textAlign:"center"}}>
+            {["일","월","화","수","목","금","토"].map(d=><div key={d} style={{fontSize:10,color:"#5a4f3f",padding:"3px 0"}}>{d}</div>)}
+            {Array.from({length:fd},(_,i)=><div key={"e"+i}/>)}
+            {Array.from({length:dim},(_,i)=>{const day=i+1,k=calY+"-"+String(calM+1).padStart(2,"0")+"-"+String(day).padStart(2,"0"),c=!!data.entries[k],it=k===today;return<div key={day} onClick={()=>c&&setSelDay(k)} style={{width:34,height:34,borderRadius:9,display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,cursor:c?"pointer":"default",background:c?"linear-gradient(135deg,#D4756B,#E88FAD)":it?"#3d3429":"transparent",color:c?"#fff":it?"#e8dcc8":"#6b5f4f",fontWeight:it||c?700:400,margin:"0 auto"}}>{day}</div>;})}
+          </div>
+        </div>
+
+        {/* Badges */}
+        <div style={{marginTop:16}}><h3 className="section-title">🏅 획득한 뱃지</h3>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8}}>
+            {BADGES.map(b=>{const e=b.check(data);return<div key={b.id} style={{textAlign:"center",padding:10,background:e?"#252017":"#1e1a14",borderRadius:12,border:"1px solid "+(e?"#3d3429":"#2a231820"),opacity:e?1:.4}}><div style={{fontSize:26,marginBottom:3,filter:e?"none":"grayscale(1)"}}>{b.emoji}</div><p style={{fontSize:9,color:e?"#e8dcc8":"#5a4f3f",lineHeight:1.2}}>{b.name}</p></div>;})}
+          </div>
+        </div>
+      </div>}
+
+      {/* TOPICS */}
+      {view==="topics"&&<div style={{padding:"20px 20px 0"}}>
+        <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,marginBottom:4}}>💡 오늘 뭐 쓰지?</h2>
+        <p className="text-muted" style={{fontSize:13,marginBottom:20}}>주제를 선택하면 AI가 글쓰기를 도와드려요</p>
+        <div style={{display:"flex",gap:8,marginBottom:16}}>
+          <input value={custTopic} onChange={e=>setCustTopic(e.target.value)} placeholder="직접 주제 입력..." className="input-field" style={{flex:1}}/>
+          <button onClick={()=>{if(custTopic.trim()){getAi(custTopic.trim());setCustTopic("");}}} style={{padding:"12px 20px",background:"linear-gradient(135deg,#D4756B,#E88FAD)",border:"none",borderRadius:12,color:"#fff",fontSize:14,fontWeight:700,cursor:"pointer",whiteSpace:"nowrap"}}>AI 추천</button>
+        </div>
+
+        {/* Trend Keywords */}
+        <div className="card" style={{marginBottom:16,padding:16}}>
+          <p style={{fontSize:13,fontWeight:700,marginBottom:10}}>🔥 트렌드 키워드</p>
+          <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+            {TREND_KEYWORDS.map((kw,i)=><button key={i} onClick={()=>getAi(kw)} style={{padding:"6px 12px",background:"#1a1612",border:"1px solid #3d3429",borderRadius:20,color:"#d4c8b0",fontSize:12,cursor:"pointer"}}>#{kw}</button>)}
+          </div>
+        </div>
+
+        {/* Review Section */}
+        <div className="card" style={{marginBottom:16,padding:16}}>
+          <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+            <p style={{fontSize:13,fontWeight:700}}>📝 AI 글 리뷰</p>
+            <span className="premium-badge">PRO</span>
+          </div>
+          <div style={{display:"flex",gap:8}}>
+            <input value={reviewUrl} onChange={e=>setReviewUrl(e.target.value)} placeholder="블로그 글 URL 입력..." className="input-field" style={{flex:1}}/>
+            <button onClick={doReview} className="btn-secondary" style={{whiteSpace:"nowrap"}}>리뷰</button>
+          </div>
+        </div>
+
+        {/* Topic Categories */}
+        {TOPICS.map((c,ci)=><div key={ci} style={{marginBottom:12}}>
+          <div onClick={()=>setTopicOpen(topicOpen===ci?null:ci)} style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",background:"#252017",borderRadius:topicOpen===ci?"14px 14px 0 0":"14px",cursor:"pointer",border:"1px solid #3d342920"}}>
+            <span style={{fontSize:22}}>{c.icon}</span><span style={{flex:1,fontWeight:600,fontSize:14}}>{c.name}</span><span className="text-muted">{c.topics.length}개</span><span style={{color:"#5a4f3f",transform:topicOpen===ci?"rotate(180deg)":"rotate(0deg)",transition:".2s",display:"inline-block",fontSize:12}}>▼</span>
+          </div>
+          {topicOpen===ci&&<div style={{background:"#1e1a14",borderRadius:"0 0 14px 14px",padding:"6px 0",border:"1px solid #3d342920",borderTop:"none"}}>
+            {c.topics.map((t,ti)=><div key={ti} onClick={()=>getAi(t)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",cursor:"pointer",borderBottom:ti<c.topics.length-1?"1px solid #252017":"none"}}><span style={{fontSize:13,color:"#d4c8b0"}}>{t}</span><span style={{fontSize:11,color:"#E88FAD",whiteSpace:"nowrap",marginLeft:8}}>AI →</span></div>)}
+          </div>}
+        </div>)}
+      </div>}
+
+      {/* RANKING */}
+      {view==="rank"&&<div style={{padding:"20px 20px 0"}}>
+        <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,marginBottom:4}}>🏆 랭킹</h2>
+        <p className="text-muted" style={{fontSize:13,marginBottom:20}}>함께 도전하는 글쓰기 챌린저들</p>
+        <div style={{display:"flex",gap:8,marginBottom:16}}>
+          <button onClick={()=>{loadLeaderboard();}} className="btn-secondary" style={{flex:1}}>🔄 새로고침</button>
+          <button onClick={()=>{setShowGroupModal(true);loadGroups();}} className="btn-secondary" style={{flex:1}}>👥 그룹 참여</button>
+        </div>
+        {data.groupId&&<div style={{background:"#252017",borderRadius:12,padding:"10px 14px",marginBottom:16,border:"1px solid #3d342920"}}><p style={{fontSize:13}}>📌 현재 그룹: <b style={{color:"#E88FAD"}}>{data.groupName}</b></p></div>}
+
+        {/* My Card */}
+        <div className="card" style={{marginBottom:16,background:"linear-gradient(145deg,#252017,#2a2318)"}}>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <img src={user.picture} alt="" style={{width:44,height:44,borderRadius:"50%",border:"2px solid #D4756B",objectFit:"cover"}} referrerPolicy="no-referrer"/>
+            <div style={{flex:1}}><p style={{fontSize:14,fontWeight:700}}>{user.name} <span style={{fontSize:11,color:"#8b7e6a"}}>(나)</span></p><p className="text-muted">{lv.emoji} {lv.name}</p></div>
+            <div style={{textAlign:"right"}}><p style={{fontSize:24,fontWeight:900,color:"#E88FAD"}}>{data.totalDays}</p><p className="text-xs">총 작성일</p></div>
+          </div>
+        </div>
+
+        {/* Leaderboard */}
+        {lbLoading?<div style={{textAlign:"center",padding:32}}><div className="spinner"/><p className="text-muted" style={{marginTop:12}}>랭킹 로딩 중...</p></div>
+        :leaderboard.length>0?<div className="card">{leaderboard.map((u,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 0",borderBottom:i<leaderboard.length-1?"1px solid #3d342920":"none"}}>
+          <span style={{fontSize:i<3?20:14,width:28,textAlign:"center"}}>{i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)}</span>
+          {u.picture?<img src={u.picture} alt="" style={{width:32,height:32,borderRadius:"50%",objectFit:"cover"}} referrerPolicy="no-referrer"/>:<div style={{width:32,height:32,borderRadius:"50%",background:"#3d3429",display:"flex",alignItems:"center",justifyContent:"center",fontSize:14}}>?</div>}
+          <div style={{flex:1}}><p style={{fontSize:13,fontWeight:u.id===user.id?700:400}}>{u.name||"익명"}{u.id===user.id?" ⭐":""}</p></div>
+          <div style={{textAlign:"right"}}><p style={{fontSize:16,fontWeight:700,color:"#E88FAD"}}>{u.totalDays||0}일</p><p className="text-xs">🔥{u.currentStreak||0}</p></div>
+        </div>)}</div>
+        :<div style={{textAlign:"center",padding:32}}><p style={{fontSize:40,marginBottom:8}}>🏆</p><p style={{color:"#8b7e6a",fontSize:14}}>Firebase 연동 후 랭킹이 표시됩니다</p><p className="text-muted" style={{marginTop:4}}>현재는 내 기록만 확인 가능합니다</p></div>}
+      </div>}
+
+      {/* STATS */}
+      {view==="stats"&&<div style={{padding:"20px 20px 0"}}>
+        <h2 style={{fontFamily:"'Noto Serif KR',serif",fontSize:22,marginBottom:20}}>📊 나의 글쓰기 통계</h2>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10,marginBottom:16}}>
+          {[{l:"총 작성일",v:data.totalDays,u:"일",c:"#E88FAD"},{l:"현재 연속",v:data.currentStreak,u:"일",c:"#D4756B"},{l:"최고 연속",v:data.maxStreak,u:"일",c:"#6B8E4E"},{l:"획득 뱃지",v:badges.length,u:"/"+BADGES.length,c:"#8B9E6B"}].map((s,i)=><div key={i} className="card-sm" style={{padding:18}}><p className="text-muted" style={{marginBottom:6}}>{s.l}</p><p style={{fontSize:32,fontWeight:900,fontFamily:"'Noto Serif KR',serif",color:s.c}}>{s.v}<span style={{fontSize:13,fontWeight:400,color:"#8b7e6a"}}>{s.u}</span></p></div>)}
+        </div>
+        <div className="card" style={{marginBottom:16}}>
+          <h3 className="section-title">월별 작성 현황</h3>
+          {(()=>{const ms=[];for(let i=5;i>=0;i--){const d=new Date();d.setMonth(d.getMonth()-i);const y=d.getFullYear(),m=d.getMonth(),dm=getDIM(y,m);let cnt=0;for(let day=1;day<=dm;day++){if(data.entries[y+"-"+String(m+1).padStart(2,"0")+"-"+String(day).padStart(2,"0")])cnt++;}ms.push({l:(m+1)+"월",c:cnt,t:dm});}const mx=Math.max(...ms.map(m=>m.c),1);return ms.map((m,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,marginBottom:6}}><span style={{fontSize:11,color:"#8b7e6a",width:28,textAlign:"right"}}>{m.l}</span><div style={{flex:1,height:18,background:"#1a1612",borderRadius:5,overflow:"hidden"}}><div style={{height:"100%",width:(m.c/mx*100)+"%",background:"linear-gradient(90deg,#D4756B,#E88FAD)",borderRadius:5,transition:"width .5s",minWidth:m.c>0?4:0}}/></div><span style={{fontSize:11,color:"#8b7e6a",width:44,textAlign:"right"}}>{m.c}/{m.t}</span></div>);})()}
+        </div>
+        <div className="card" style={{marginBottom:16}}>
+          <h3 className="section-title">요일별 패턴</h3>
+          <div style={{display:"flex",gap:6,justifyContent:"space-between"}}>
+            {["일","월","화","수","목","금","토"].map((d,di)=>{let cnt=0;Object.keys(data.entries).forEach(k=>{if(new Date(k).getDay()===di)cnt++;});const mx=Math.max(...[0,1,2,3,4,5,6].map(idx=>{let c=0;Object.keys(data.entries).forEach(k=>{if(new Date(k).getDay()===idx)c++;});return c;}),1);return<div key={di} style={{flex:1,textAlign:"center"}}><div style={{height:70,display:"flex",alignItems:"flex-end",justifyContent:"center",marginBottom:4}}><div style={{width:"65%",height:(cnt/mx*100)+"%",background:"linear-gradient(to top,#D4756B,#E88FAD)",borderRadius:3,minHeight:cnt>0?3:0}}/></div><p className="text-xs">{d}</p><p style={{fontSize:11,fontWeight:700,marginTop:1}}>{cnt}</p></div>;})}
+          </div>
+        </div>
+        <div className="card">
+          <h3 className="section-title">성장 레벨</h3>
+          {LEVELS.map((l,i)=><div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<LEVELS.length-1?"1px solid #3d342920":"none",opacity:data.totalDays>=l.min?1:.4}}><span style={{fontSize:24}}>{l.emoji}</span><div style={{flex:1}}><p style={{fontSize:13,fontWeight:600,color:data.totalDays>=l.min?l.color:"#5a4f3f"}}>{l.name}</p><p className="text-xs">{l.min}일 이상</p></div>{data.totalDays>=l.min&&<span style={{color:"#6B8E4E",fontSize:14}}>✓</span>}</div>)}
+        </div>
+      </div>}
+
       </div>
 
-      <div style={{position:"fixed",bottom:0,left:"50%",transform:"translateX(-50%)",width:"100%",maxWidth:480,background:"linear-gradient(to top,#1a1612 70%,transparent)",padding:"20px 0 8px",zIndex:100}}>
-        <div style={{display:"flex",justifyContent:"space-around",alignItems:"center",padding:"0 20px"}}>{[{id:"home",icon:"🏠",label:"홈"},{id:"topics",icon:"💡",label:"주제추천"},{id:"stats",icon:"📊",label:"통계"}].map(n=><button key={n.id} onClick={()=>setView(n.id)} style={{background:view===n.id?"#3d3429":"none",border:"none",borderRadius:14,padding:"10px 24px",display:"flex",flexDirection:"column",alignItems:"center",gap:4,cursor:"pointer",transition:"all .2s"}}><span style={{fontSize:22}}>{n.icon}</span><span style={{fontSize:10,color:view===n.id?"#e8dcc8":"#5a4f3f",fontWeight:view===n.id?700:400}}>{n.label}</span></button>)}</div>
-        <p style={{textAlign:"center",fontSize:9,color:"#3d3429",marginTop:6}}>Made by AI콘텐츠마케팅연구소 유쌤클래스</p>
+      {/* TAB BAR */}
+      <div className="tab-bar">
+        <div className="tab-bar-inner">
+          {[{id:"home",icon:"🏠",label:"홈"},{id:"topics",icon:"💡",label:"AI코칭"},{id:"rank",icon:"🏆",label:"랭킹"},{id:"stats",icon:"📊",label:"통계"}].map(n=><button key={n.id} className={"tab-btn"+(view===n.id?" active":"")} onClick={()=>{setView(n.id);if(n.id==="rank")loadLeaderboard();}}>
+            <span className="icon">{n.icon}</span><span className="label">{n.label}</span>
+          </button>)}
+        </div>
+        <p style={{textAlign:"center",fontSize:8,color:"#3d3429",marginTop:4}}>Made by AI콘텐츠마케팅연구소 유쌤클래스</p>
       </div>
     </div>
   );
 }
 
-/* ===== ROOT ===== */
+// ===== ROOT =====
 function App(){
-  const[user,setUser]=useState(()=>{try{const r=localStorage.getItem("blog-challenge-user");return r?JSON.parse(r):null;}catch(e){return null;}});
-  const login=u=>{setUser(u);try{localStorage.setItem("blog-challenge-user",JSON.stringify(u));}catch(e){}};
-  const logout=()=>{setUser(null);try{localStorage.removeItem("blog-challenge-user");}catch(e){}};
+  const[user,setUser]=useState(()=>{try{const r=localStorage.getItem("bc-user");return r?JSON.parse(r):null;}catch(e){return null;}});
+  const login=u=>{setUser(u);localStorage.setItem("bc-user",JSON.stringify(u));};
+  const logout=()=>{setUser(null);localStorage.removeItem("bc-user");};
   if(!user)return<LoginScreen onLogin={login}/>;
   return<ChallengeApp user={user} onLogout={logout}/>;
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
-</script>
-</body>
-</html>
+</script></body></html>
